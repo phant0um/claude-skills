@@ -28,6 +28,12 @@ Faz 2 jobs — dizer o que a skill é, e listar os **branches** que a disparam. 
 - **Um trigger por branch.** Sinônimos que renomeiam um branch = **duplicação**. Colapse; só branches genuinamente distintos.
 - **Corte identidade que já está no corpo.** Só triggers + cláusula "quando outra skill precisa…".
 
+## Trigger metadata (OpenHands)
+Description é prosa; o *dispatch* fica mais confiável quando os triggers são **explícitos e escopados**, como microagent OpenHands. Três campos no frontmatter, além da description:
+- **`trigger` (keywords, não frase)** — lista de palavras-gatilho literais que o agente casa, não parágrafo em prosa. Prosa infla context load e dispara fuzzy; keyword casa determinística. Um keyword por branch (mesma regra da description).
+- **Escopo — global vs project** — microagent OpenHands é *knowledge* (sempre no alcance) ou *repo* (só naquele repo). Espelhe: skill de domínio declara escopo via `tags:` → não polui context fora do domínio. Sem escopo = global = paga context load toda sessão. Declare escopo estreito por padrão.
+- **Anti-trigger (`negative`)** — diga *quando NÃO disparar*. Sem isso, keyword genérico ("revisar") canibaliza turnos vizinhos. Um anti-trigger corta o falso-positivo mais provável (ex: negative "single technical question").
+
 ## Hierarquia de informação
 Skill = **steps** + **reference**, misturam livre. Escada por urgência:
 1. **In-skill step** — ação ordenada no SKILL.md, tier primário. Cada step fecha num **completion criterion** _checável_ (dá p/ saber done de não-done?) e, onde importa, _exaustivo_ ("todo model modificado contabilizado", não "produza lista"). Critério vago convida **premature completion**.
