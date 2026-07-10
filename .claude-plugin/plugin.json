@@ -1,0 +1,20 @@
+{
+  "name": "claude-skills",
+  "version": "0.1.0",
+  "description": "Skills reutilizáveis p/ Claude Code — writing, reasoning, ingest, dev. Extraídas de um vault Obsidian operando como SO de agentes.",
+  "author": {
+    "name": "phant0um",
+    "url": "https://github.com/phant0um"
+  },
+  "homepage": "https://github.com/phant0um/claude-skills",
+  "repository": "https://github.com/phant0um/claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "skills",
+    "agents",
+    "obsidian",
+    "writing",
+    "reasoning"
+  ]
+}
