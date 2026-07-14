@@ -71,9 +71,26 @@ Todas verdadeiras:
 
 Entao: "Pronto. Quer que eu aja direto ou gera doc (PRD/plano) primeiro?"
 
+## Modo questionário (resposta não existe na sessão)
+
+Nem toda pergunta resolve na hora. Resposta que é unknown-unknown dependente de terceiro (stakeholder, dado externo, teste ainda não feito) → NÃO travar o confirmation gate. Emitir questionário e seguir grillando o resolvível.
+
+- **Trigger:** usuário responde "não sei", "preciso perguntar pra X", "depende de dado que não tenho" — ou pergunta cai em unknown-unknown sem base pra recomendar.
+- **Ação:** registrar a pergunta num artefato questionário (markdown), NÃO inventar resposta. Continuar a sessão com as perguntas que dão pra resolver agora.
+- **Loop:** respostas preenchidas offline/colaborativo voltam como input → nova rodada de grilling sobre elas. Questionário fecha o gap sem bloquear a sessão.
+
+```
+## Questionário — <tópico>
+### Q1 [CATEGORIA]
+Pergunta: <clara e específica>
+Contexto: <por que importa / o que trava sem isso>
+Opções conhecidas: A / B / (outra)
+Resposta: _____
+```
+
 ## Linhagem
 
-- **Upstream:** Matt Pocock (grilling v1.1, generalizado no PR #532) + Fable (matriz de unknowns) + Karpathy P1 (think before acting).
+- **Upstream:** Matt Pocock (grilling v1.1, generalizado no PR #532; grilling → questionnaire loop) + Fable (matriz de unknowns) + Karpathy P1 (think before acting).
 - **Original (vault):** scope negativo, decision tree 8-cat, Facts vs Decisions (anti-self-grilling), confirmation gate.
 - **Critério:** mecanismo > autor. Fonte rastreável, não privilegiada.
 
