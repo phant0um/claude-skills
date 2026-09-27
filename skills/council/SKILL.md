@@ -1,49 +1,48 @@
 ---
 name: council
-description: 5 advisors com perspectivas hard-wired debatem uma questão, revisam uns aos outros de forma cega, e entregam veredicto estruturado num único contexto. Use para decisões estratégicas multi-dimensionais onde blind spots são esperados.
-trigger: "council this" | "@council [questão]" | "/council [questão]" | "convoca o council" | "run a council on this"
-version: 1.0
-model: claude-opus-4-8
-effort: high
-tags: [reasoning, decision-making, multi-perspective, peer-review, deliberation]
+trigger: ['council this', '@council [questão]', '/council [questão]']
+description: "Use when: council this — 5 advisors com perspectivas hard-wired debatem uma questão, revisam uns aos outros de forma cega, e entregam veredicto estruturado. Substitui coordenação de múltiplos modelos por prompt engineering sofisticado em um único contexto."
 ---
-
 # Skill: Council
 
 ## Propósito
 
 5 advisors com perspectivas hard-wired debatem uma questão, revisam uns aos outros de forma cega, e entregam veredicto estruturado. Substitui coordenação de múltiplos modelos por prompt engineering sofisticado em um único contexto.
 
-**Diferença de `debate`:** debate = 2 posições opostas (A vs B), árbitro decide (ver skill `debate`). Council = 5 lentes distintas cobrindo sistematicamente risco + problema real + upside oculto + praticidade + ação concreta — sem posições predefinidas.
+**Diferença de `/debate`:** debate = 2 posições opostas (A vs B), árbitro decide. Council = 5 lentes distintas cobrindo sistematicamente risco + problema real + upside oculto + praticidade + ação concreta — sem posições predefinidas.
 
-**Council vs. exploração de trajetórias:** explorar múltiplas trajetórias de raciocínio resolve *como*. Council usa 5 perspectivas humanas para decidir *o quê/se*.
+**Diferença de `heavy-think`:** heavy-think = múltiplas trajetórias de raciocínio para resolver *como*. Council = 5 perspectivas humanas para decidir *o quê/se*.
 
 ---
+
+## Quando NÃO usar
+
+- **Decisão binária simples** (A vs B com critério objetivo) — `debate` (2 posições) ou decisão direta custam menos.
+- **Questão de execução (*como*)** — `heavy-think` resolve trajetórias de raciocínio; council decide o quê/se.
+- **Pressa com custo alto** — 5 advisors custam tokens; para decisão reversível de baixo risco, decidir direto.
+- **Fato verificável** — council não resolve fato; buscar a fonte.
+
+Disambiguation: `debate` = 2 posições opostas, árbitro decide; `council` = 5 lentes cobrindo risco/problema/upside/praticidade/ação; `heavy-think` = múltiplas trajetórias para resolver como; `reason-judge` pontua output por rubrica, não delibera decisão.
+
 
 ## Condições de Ativação
 
 Ative quando:
 - Decisão estratégica com múltiplas dimensões (não apenas A vs B)
 - Usuário diz "council this" antes de qualquer questão
-- Spec arquitetural complexa antes de comprometer recursos
-- Decisão onde blind spots são esperados
+- Spec arquitetural complexa antes de escalar para Opus
+- Decisão de produto/arquitetura onde blind spots são esperados
 
-NÃO ative para: implementações concretas; questões técnicas verificáveis; A vs B claro (→ ver skill `debate`).
-
----
-
-## Modelo por Etapa
-
-Para reduzir custo, use um modelo mais barato para as etapas divergentes (extração e advisors) e reserve o modelo mais forte para a síntese final.
-
-| Etapa | Modelo | Razão |
-|-------|--------|-------|
-| Extração de contexto | barato/rápido | Parsing estruturado |
-| 5 advisors (em paralelo) | intermediário × 5 | Perspectiva + evidência por advisor |
-| Blind peer review | intermediário | Revisão cruzada sem viés de posição |
-| Veredicto final | mais forte | Síntese de alta complexidade |
+NÃO ative para: implementações concretas (→ spec/extend); questões técnicas verificáveis (→ heavy-think); segurança (→ guard); A vs B claro (→ debate).
 
 ---
+
+## Perfil de modelo
+
+Perfil `deep` — 5 perspectivas hard-wired em contradicao deliberada, com peer review cego:
+sintese de desacordo e auditoria semantica
+(model-routing §Padrao custo-efetivo; model-catalog §Perfis).
+Esta skill nao mantem pins locais por etapa.
 
 ## Protocolo
 
@@ -135,35 +134,11 @@ Próximo passo: [1 ação específica]
 Condição de revisão: [quando mudar de ideia]
 ```
 
----
-
-## Exemplo
-
-**Input:** "council this — devo largar meu emprego CLT para tocar meu SaaS solo em tempo integral? Tenho 8 meses de reserva e ~R$2k MRR."
-
-**Output (resumido):**
-```
-COUNCIL: Largar CLT para SaaS solo full-time agora?
-
-━━━ ADVISORS ━━━
-Risk:      8 meses de runway some rápido se o MRR estagnar; sem colchão de renda.
-Problem:   O gargalo não é tempo, é canal de aquisição — mais horas não resolvem distribuição.
-Upside:    Full-time pode destravar parcerias e vendas outbound impossíveis no part-time.
-Pragmatics:Testar 3 meses reduzindo para 20h CLT antes do salto de tudo-ou-nada.
-Action:    Não largaria ainda; validaria 1 canal repetível de aquisição primeiro.
-
-━━━ PEER REVIEW ━━━
-Resposta mais forte: Problem — todos assumiram que tempo é a restrição; é distribuição.
-Maior blind spot individual: Upside ignorou que outbound exige skill que você ainda não tem.
-O que todos perderam: nenhum quantificou qual MRR tornaria o salto reversível-seguro.
-
-━━━ VEREDICTO ━━━
-Recomendação: Não largar agora. Definir gatilho: largar quando MRR cobrir 60% do custo de vida por 2 meses seguidos.
-Blind spot coletivo: ninguém definiu o número que transforma a aposta em decisão racional.
-Tensão central: foco total acelera aprendizado vs. runway curto pune erros de distribuição.
-Próximo passo: esta semana, escolher e rodar 1 canal de aquisição medível.
-Condição de revisão: reavaliar quando MRR dobrar ou a reserva cair abaixo de 5 meses.
-```
+**Veredito que é decisão arquitetural** (escolhe estrutura, contrato, stack ou
+política do sistema): o `Próximo passo` é registrar a decisão →
+decisions, com a recomendação, a tensão
+central como trade-off e a condição de revisão como gatilho de reabertura. Fora
+disso, o veredito fecha no próprio output.
 
 ---
 
@@ -172,14 +147,15 @@ Condição de revisão: reavaliar quando MRR dobrar ou a reserva cair abaixo de 
 - [ ] 5 advisors executados em paralelo (não sequência)
 - [ ] Shuffle + anonimização aplicados no peer review
 - [ ] Veredito sintetizado com contribuição de cada lente
-- [ ] Se questão tem resposta técnica verificável: não usado
+- [ ] Veredito arquitetural: `Próximo passo` aponta para `decisions`
+- [ ] Se questão tem resposta técnica verificável: não usado (usar heavy-think)
 
 ## Failure modes
 
 - **Sequential advisors**: rodar 5 advisors em sequência → paralelo obrigatório, sequencial contamina
 - **Skip anonymization**: pular shuffle + anonimização → viés de posição invalida peer review
-- **Weak model for advisors**: usar modelo fraco para perspectivas → perspectivas requerem raciocínio real
-- **Verifiable answer**: usar council para questão com resposta técnica → não é o caso de uso
+- **Haiku for advisors**: usar Haiku para perspectivas → perspectivas requerem raciocínio real (Sonnet+)
+- **Verifiable answer**: usar council para questão com resposta técnica → usar heavy-think
 
 ---
 
@@ -187,27 +163,36 @@ Condição de revisão: reavaliar quando MRR dobrar ou a reserva cair abaixo de 
 
 - NUNCA executar advisors em sequência — paralelo obrigatório (sequencial contamina perspectivas)
 - NUNCA pular o shuffle + anonimização no peer review — viés de posição invalida a revisão cruzada
-- NUNCA usar um modelo fraco demais para advisors — perspectivas requerem raciocínio real
-- Se a questão tiver resposta técnica verificável: não usar council
+- NUNCA usar Haiku para advisors — perspectivas requerem raciocínio real
+- Se a questão tiver resposta técnica verificável: não usar council, usar heavy-think
 
 ---
 
 ## Relacionado
 
-- Skill `debate` — 2 perspectivas opostas; council = 5 lentes não-opostas
-- Skill `pre-mortem` — analisa riscos de um plano já escolhido; council escolhe qual plano adotar
+- `debate` — 2 perspectivas opostas; council = 5 lentes não-opostas
+- heavy-think — múltiplas trajetórias de solução; council = perspectivas humanas de decisão
+- `pre-mortem` — analisa riscos de plano já escolhido; council escolhe qual plano adotar
 
 ---
 
-## Mecanismos anti-groupthink
+## Mecanismos importados (council-of-high-intelligence)
 
 Endurecem a deliberação contra groupthink e perguntas mal-formuladas:
 
-- **Problem-Restate Gate:** antes de qualquer análise, cada perspectiva reformula a pergunta. Se as reformulações divergem, a pergunta É o problema — resolver isso primeiro.
-- **Dissent quota / novelty gate:** se >70% concordam cedo, forçar 2 perspectivas a fazer steelman da posição oposta. Sem dissenso genuíno, sem veredito.
-- **Verdict lidera com incerteza:** veredito abre com "Perguntas Não-Resolvidas" + "Próximos Passos", não com consenso confiante. O que não se sabe importa mais que onde concordam.
-- **Multi-modelo (opcional):** rodar os advisors num modelo mais barato e reservar o modelo mais forte para a síntese reduz custo e diversifica o raciocínio.
+- **Problem-Restate Gate:** antes de qualquer análise, cada perspectiva reformula
+  a pergunta. Se as reformulações divergem, a pergunta É o problema — resolver isso primeiro.
+- **Dissent quota / novelty gate:** se >70% concordam cedo, forçar 2 perspectivas a
+  fazer steelman da posição oposta. Sem dissenso genuíno, sem veredito.
+- **Verdict lidera com incerteza:** veredito abre com "Perguntas Não-Resolvidas" +
+  "Próximos Passos", não com consenso confiante. O que não se sabe importa mais que onde concordam.
+- **Multi-provider (opcional):** membros baratos via Ollama (model-router), síntese via Claude.
+  Reduz custo e diversifica raciocínio. Ref: model-router.
 
----
 
-*Adaptado do padrão Claude Council (5-advisor).*
+## Modos absorvidos (R3)
+
+`kind: reference` — carregue o spec do modo pedido e execute-o com esta skill como base.
+
+- **MODO DEBATE (2 lados)** — `debate`
+- **MODO HEAVY-THINK (1 perspectiva, profundidade)** — heavy-think

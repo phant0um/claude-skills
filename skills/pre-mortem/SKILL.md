@@ -1,47 +1,47 @@
 ---
 name: pre-mortem
-description: Avalia planos de alto risco usando prospective hindsight — "este plano já falhou, explique como morreu." O framing quebra o viés otimista e produz razões de falha específicas e acionáveis.
+description: "Use when: @premortem <plan> — prospective-hindsight APÓS o compromisso assumido: como o plano vai falhar? (não se deve fazer). Diferente de `office-hours` (que questiona se a ideia merece investimento, fase de decisão); pre-mortem assume o compromisso e busca o modo de falha."
 trigger: "@premortem [plano]" | "/premortem [plano]" | "que poderia matar isso?" | "pre-mortem this" | "how could this fail?"
-version: 1.0
-source: Gary Klein (Harvard Business Review) + endosso de Kahneman
-tags: [reasoning, risk, decision-making, parallel-agents, pre-mortem]
 ---
+
 
 # Skill: Pre-Mortem
 
 ## Propósito
-Avaliar planos de alto risco usando prospective hindsight: "este plano já falhou — explique como morreu." O framing "já falhou" quebra o viés otimista e produz razões mais específicas e honestas que "o que poderia dar errado?".
+Avaliar planos de alto risco usando prospective hindsight: "este plano já falhou — explique como morreu." O framing "já falhou" quebra o viés otimista do Claude e produz razões mais específicas e honestas que "o que poderia dar errado?".
 
 ---
 
+## Quando NÃO usar
+
+- **Decisão trivial reversível** — pre-mortem custa mais que o risco.
+- **Plano já em execução sem checkpoint** — pre-mortem é prospective (antes), não retrospectivo.
+- **Sem plano escrito** — pre-mortem sobre ideia vaga vira brainstorm; escrever o plano antes.
+
+Disambiguation: `pre-mortem` antecipa falhas de um plano (prospective hindsight); `drift-review` detecta desvio entre docs e código; `contradiction-sweep` varre contradições numa base de conhecimento — pre-mortem é sobre o futuro, não o presente.
+
+
 ## Condições de Ativação
 Ative esta skill quando:
-- Decisão irreversível ou de alto custo de erro (investimento, lançamento de MVP, mudança de carreira)
+- Decisão irreversível ou de alto custo de erro (investimento, concurso strategy, MVP launch)
 - Usuário solicitar `@premortem [plano]` ou "que poderia matar isso?"
-- Antes de comprometer recursos significativos (tempo, dinheiro, reputação)
+- Antes de comprometer recursos significativos (tempo >1 semana, dinheiro >R$1000)
 
 NÃO ative para: feedback simples; perguntas factuais; decisões já tomadas e irreversíveis; tarefas operacionais de rotina.
 
 ---
 
-## Modelo por Etapa
+## Perfil de modelo
 
-Para reduzir custo, use um modelo mais barato nas etapas mecânicas e divergentes e reserve o modelo mais forte para a síntese de risco.
-
-| Etapa | Modelo | Justificativa |
-|-------|--------|---------------|
-| Coleta de contexto | barato/rápido | Busca em arquivos e memória do projeto |
-| Avalia suficiência de contexto | barato/rápido | Checklist mecânico |
-| Premortem bruto (lista de falhas) | intermediário | Requer criatividade + especificidade |
-| Sub-agentes por modo de falha | intermediário | Paralelo, independente |
-| Síntese final | mais forte | Julgamento de risco integrado |
-
----
+Perfil `deep` — prospective hindsight: gerar modos de falha especificos e criativos e o produto,
+e `route.profile: deep` ja estava declarado no frontmatter
+(model-routing §Padrao custo-efetivo; model-catalog §Perfis).
+Esta skill nao mantem pins locais por etapa.
 
 ## Protocolo de Execução
 
 ### PASSO 1 — Coleta de Contexto
-Buscar em documentos e notas relevantes do projeto. Extrair: o que é, para quem, como é sucesso.
+Buscar em CLAUDE.md, memory/, arquivos do projeto. Extrair: o que é, para quem, como é sucesso.
 
 ### PASSO 2 — Avalia Suficiência
 Precisa de 3 elementos mínimos:
@@ -83,75 +83,32 @@ Integrar todos os modos de falha e produzir:
 
 ---
 
-## Exemplo
-
-**Input:** "@premortem vou lançar um curso online de Python em 6 semanas, gravando à noite depois do trabalho, e vender para minha lista de 500 emails."
-
-**Output (resumido):**
-```
-PRE-MORTEM: Curso de Python em 6 semanas
-
-Falha mais provável: burnout de gravação — 6 semanas noturnas colidem com semanas
-de trabalho pesado; gravação para, prazo estoura, momentum morre.
-
-Falha mais perigosa: lista de 500 emails converte a 1% → 5 vendas; receita não paga
-o esforço e desmotiva o próximo lançamento.
-
-Suposto oculto: que a lista está "quente" e quer justamente este curso — nunca foi
-validado com uma enquete ou pré-venda.
-
-Plano revisado:
-1. Pré-vender antes de gravar (validar demanda + criar compromisso).
-2. Gravar módulo 1 completo antes de anunciar data — reduz risco de prazo.
-3. Reservar 2 semanas de buffer no cronograma noturno.
-4. Segmentar a lista e medir interesse antes de comprometer 6 semanas.
-
-Checklist pré-lançamento:
-[ ] Enquete de interesse enviada e >30 respostas positivas
-[ ] Pré-venda com ao menos 10 compradores antes de gravar tudo
-[ ] Módulo 1 gravado e revisado
-[ ] Buffer de cronograma definido
-```
-
----
-
 ## Artefatos de Saída
 - Resumo no chat: máx 3 frases (falha mais provável + suposto oculto + revisão mais importante)
-- Relatório completo em arquivo, se solicitado
+- `premortem-report-[timestamp].md` — relatório completo (se solicitado)
 
 ---
 
 ## Completion
 
-- [ ] Sub-agentes executaram em paralelo (cada um com framing "já falhou")
+- [ ] 5 sub-agentes executaram em paralelo (cada um com framing "já falhou")
 - [ ] 4 outputs entregues: falha mais provável, mais perigosa, suposto oculto, plano revisado (3-5 ajustes)
 - [ ] Checklist pré-lançamento com 3-5 verificações concretas
-- [ ] Resumo no chat: máx 3 frases
+- [ ] Resumo no chat: máx 3 frases (falha provável + suposto oculto + revisão principal)
 - [ ] Riscos específicos ao plano (não genéricos)
 
 ## Failure modes
 
-- **Cortês com o plano**: sugestões suavizadas → framing "já falhou" é o mecanismo crítico
-- **Sequential sub-agents**: lançar sub-agentes em sequência → paralelo obrigatório, sequencial contamina
+- **Cortês com o plano**: suggestions suavizadas → framing "já falhou" é o mecanismo crítico
+- **Sequential sub-agents**: lançar 5 sub-agentes em sequência → paralelo obrigatório, sequencial contamina
 - **Generic risks**: "pode falhar por falta de mercado" → sempre específico ao plano concreto
 - **Force-count**: forçar 7 falhas quando há 3 reais → quantidade segue qualidade, não quota
 
 ---
 
-## Restrições
+## Restrições## Restrições
 - NUNCA ser cortês com o plano — o framing "já falhou" é o mecanismo psicológico crítico
 - NUNCA lançar sub-agentes em sequência — paralelo obrigatório (sequencial contamina)
 - NUNCA forçar 7 falhas se há 3, nem parar em 3 se há 7
 - NUNCA usar riscos genéricos ("pode falhar por falta de mercado") — sempre específico ao plano
 - Diferente de risk assessment: premortem vai ao futuro onde falhou, não avalia probabilidades no presente
-
----
-
-## Relacionado
-
-- Skill `debate` — escolhe entre duas opções antes de haver um plano
-- Skill `council` — decide qual plano adotar; pre-mortem estressa o plano já escolhido
-
----
-
-*Fonte do método: Gary Klein (Harvard Business Review), com endosso de Daniel Kahneman.*

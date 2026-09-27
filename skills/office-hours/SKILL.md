@@ -1,17 +1,23 @@
 ---
 name: office-hours
-description: Interrogação de produto/ideia — 6 forcing-questions estilo YC office hours, para pressionar uma ideia antes de construir.
+description: "Use when: /office-hours — interrogatório de DECISÃO: a ideia merece investimento? 6 forcing-questions estilo YC. Fase de avaliação pré-compromisso. Diferente de `pre-mortem` (que assume o compromisso e busca como vai falhar via prospective hindsight); office-hours é 'vale a pena fazer?', pre-mortem é 'como isso dá errado?'."
 trigger: "/office-hours" | "office hours" | "interroga essa ideia" | "stress-test this idea" | "should I build this"
 ---
-
-# office-hours — interroga a ideia antes de construir
+ office-hours — interroga a ideia antes de construir
 
 Aplica quando: nova ideia de produto/projeto/empreendimento, antes de planejar.
+Inspiração: gstack /office-hours (Garry Tan, YC).
 
-Inspiração: office hours estilo YC (Garry Tan).
+## Quando NÃO usar
+
+- **Pergunta de fato** — office-hours é para debate/julgamento; fato vai para busca dirigida.
+- **Decisão com deadline imediato** — a skill assume disponibilidade para conversar; se urgente, decidir com o que há.
+- **Questão já resolvida na sessão** — reabrir decisão fechada é ruído; respeitar o veredito anterior.
+- **Ideia sem autor disposto a iterar** — sem interlocutor, as 6 perguntas não têm resposta; adiar.
+
+Disambiguation: `office-hours` interroga a ideia antes de construir; `grill-me` é entrevista adversarial para afiar plano; `council` delibera com 5 perspectivas — office-hours assume um interlocutor e sai com decisão go/pivot/drop.
 
 ## 6 forcing-questions
-
 1. Qual o problema real, e de quem? (1 frase, sem jargão)
 2. Por que agora? O que mudou?
 3. Qual a menor coisa que prova/refuta isto em 1 semana?
@@ -19,19 +25,20 @@ Inspiração: office hours estilo YC (Garry Tan).
 5. Se desse 10×, como seria? Se falhasse, por quê (pré-mortem)?
 6. Próximo passo concreto, mensurável, esta semana?
 
-Saída: respostas curtas + 1 decisão (go / pivot / drop).
+Saída: respostas curtas + 1 decisão (go / pivot / drop). Liga a empreendedorismo.
+Sem sycophancy — desafiar a premissa (cf council/debate/grill-me).
 
-Sem bajulação — desafiar a premissa. Ver skills `council`, `debate` e `grill-me` para outras formas de pressão.
+> Distinção: office-hours interroga uma ideia com forcing-questions; `grill-me` faz entrevista adversarial de um plano.
 
-## Exemplo
+## Completion
 
-**Ideia:** "App que usa IA para sugerir receitas com base no que tem na geladeira."
+- [ ] Pergunta do usuário atendida dentro do horário declarado (ou escalada).
+- [ ] Resposta curta e diretiva; sem bullshit introdutório.
+- [ ] Se não souber, disse exatamente o que falta.
 
-1. **Problema/de quem?** Pessoas que desperdiçam comida e não sabem o que cozinhar à noite.
-2. **Por que agora?** Modelos de visão baratos o bastante para reconhecer ingredientes por foto.
-3. **Menor teste em 1 semana?** Formulário: usuário manda foto da geladeira via WhatsApp, eu respondo à mão com 3 receitas. Mede se voltam.
-4. **Quem já resolve?** Apps de receita (SuperCook) exigem digitar tudo à mão — fricção alta; ninguém parte da foto.
-5. **10×?** Vira o roteirista automático do jantar da casa. **Falha?** Reconhecimento erra ingrediente e sugere lixo → usuário perde confiança na 1ª tentativa.
-6. **Próximo passo:** rodar o teste manual com 10 pessoas esta semana; meta ≥4 voltam pedindo de novo.
+## Failure modes
 
-**Decisão:** go — mas validar a taxa de retorno antes de escrever qualquer código.
+- **Sycophancy**: aceitar a premissa da ideia sem desafiar → questione cada forcing-question.
+- **Sair sem decisão**: respostas sem go / pivot / drop no fim → feche com uma decisão.
+- **Reabrir decisão fechada**: reinterrogar ideia já resolvida na sessão → respeite o veredito anterior.
+- **Confundir com grill-me**: entrevistar um plano em vez de uma ideia → plano vai para `grill-me`.

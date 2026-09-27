@@ -1,12 +1,22 @@
 ---
 name: content-design
-description: 5 regras de escrita para todo artefato persistido (nota, resumo, doc, README). Front-load, 1 ideia/frase, concreto. Aplicar antes de salvar qualquer texto que outra pessoa (ou sessão futura) vai ler.
+description: "Use when: antes de salvar qualquer artefato persistido — página wiki, resumo, conceito, README — cuidar de ESTRUTURA (front-load, 1 ideia/frase, concreto). NÃO é revisão de voz: para tom/AI-slop use voice-registers. Aplicar antes de salvar texto que outra pessoa (ou sessão futura) vai ler. triage-classification só decide approved/disapproved e content-synthesis só comprime fontes: dar estrutura à página de ingest, ao resumo ou à nota antes de salvar é aqui."
 trigger: ["escrever doc", "salvar nota", "resumo", "documentar", "content design", "write docs", "draft readme"]
 ---
 
+
 <what-to-do>
 
-Aplique 5 regras ao texto **antes de salvar**. Não mudam o conteúdo — mudam a ordem e o corte. Objetivo: leitor sabe se precisa do resto na 1ª linha. Front-load aplicado à escrita: economia de atenção (e token) na leitura futura.
+Aplique 5 regras ao texto **antes de salvar**. Não mudam o conteúdo — mudam a ordem e o corte. Objetivo: leitor sabe se precisa do resto na 1ª linha. Isso é hot-path aplicado à escrita — economia de token na leitura futura.
+
+## Quando NÃO usar
+
+- **Artefato transitório** (draft, scratchpad, /tmp) — 5 regras são para persistido. Exceção: rascunho de texto externo (comentário de GitHub, corpo de PR, resposta a revisor) mora no scratchpad mas vai ser publicado. As 5 regras valem; a cadeia está em escrita.
+- **Nota processada por pipeline** (receipts, manifests) — formato de máquina não passa por content-design.
+- **Conversa no chat** — content-design é para arquivos salvos, não mensagens. Texto que sai do chat para um PR ou issue deixa de ser conversa.
+
+Disambiguation: `content-design` governa escrita de qualquer artefato persistido; `writing-shape` molda material bruto em artigo; `content-design-review` revisa contra as regras — design escreve, review confere.
+
 
 ## As 5 regras
 
@@ -36,21 +46,35 @@ Aplique 5 regras ao texto **antes de salvar**. Não mudam o conteúdo — mudam 
 - [ ] Números e nomes onde havia vago
 - [ ] Nada repetido
 
-## Exemplo
-
-**Antes** (veredito enterrado, vago):
-> Neste relatório vamos explorar diversos aspectos da migração. Ao longo do documento, cobriremos uma gama de considerações técnicas. De certa forma, a nova arquitetura traz melhorias. Após análise, concluímos que a latência caiu.
-
-**Depois** (regras 1, 2, 4 aplicadas):
-> Latência caiu 340ms→90ms após a migração. Causa: cache de prefixo no edge. Detalhes de config abaixo.
-
 ## Escopo
 
-Aplica a: nota, resumo, conceito, README, ADR, relatório — qualquer texto persistido que alguém lê depois.
-Não aplica a: transcript cru, captura de inbox (fica cru até processar).
+Aplica a: página wiki, resumo de estudo, conceito, entity, README, ADR, relatório.
+Não aplica a: transcript cru (`.raw/`), captura de inbox (fica cru até ingest).
 
-## Par validador
+## Relação com outras camadas
 
-Depois de redigir, rode **content-design-review** (skill irmã) — audita o texto contra estas 5 regras e devolve veredito por linha. Padrão _generate + review_: esta molda, a outra reprova.
+- **voice-registers** (voice-registers) — camada de **voz**: registro por corpus (Karpathy/Thariq/Boris) + catálogo de AI-slop + `voice-lint.py`. Este arquivo molda estrutura; aquele molda voz. Rodar este primeiro — `voice-registers` chama este de volta no passo 1.
+- **content-design-review** (`content-design-review`) — validador pareado (padrão emil: gera aqui, reprova lá). Rodar após redigir, antes de salvar: audita as 5 regras com veredito acionável por linha.
+- **Caveman** comprime a *conversa* (output ao usuário). Content-design molda o *artefato salvo*. Ortogonais.
+- **Karpathy 4P** reduz erro de raciocínio. Content-design reduz atrito de leitura.
+- Regra 2 (front-load) = mesmo princípio de hot-path/ponteiro, na escala da frase.
 
 </what-to-do>
+
+## Completion
+
+- [ ] Artefato perseguido passa as 5 regras ou violações explicitadas.
+- [ ] Conclusão na primeira linha (front-load).
+- [ ] Revisão final relê o artefato do disco (não da memória).
+
+## Failure modes
+
+- **Veredito enterrado**: conclusão fica no §3+ → mova para a linha 1 antes de salvar (regra 2).
+- **Aplicar em artefato transitório**: draft, receipt ou manifest de máquina → fora do escopo; exceção é texto externo que vai ser publicado.
+- **Confundir estrutura com voz**: corrigir tom aqui → voz é `voice-registers`; esta skill só molda estrutura.
+- **Revisão pela memória**: checar o checklist sem reler o arquivo → releia do disco antes de concluir.
+
+## Skills pareadas
+
+- **content-design-review** (`content-design-review`) — validador invocavel (`kind: skill-proc` desde 2026-09-02; era modo `reference` desta skill). Gera aqui, reprova la.
+- **writing-great-skills** — vocabulario e principios para escrever/editar skills. Skill `writing-great-skills` deste pack.

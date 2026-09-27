@@ -1,16 +1,22 @@
 ---
 name: trace
-description: Reverse-engineer por que um agente produziu um output inesperado — identifica qual parte do agent file (identidade, restrições, modelo, tools) causou o comportamento e propõe correção cirúrgica.
+description: "Spec do MODO ALVO = OUTPUT DE AGENTE de `diagnose`. Não é skill invocável. @trace [descrição do output inesperado] — Reverse-engineer por que um agente produziu um output inesperado. Identificar qual parte do agent file (identidade, restrições, modelo, tools) habilitou ou causou o com"
 trigger: "@trace [descrição do output inesperado]" | "/trace [agente] [comportamento]" | "trace this agent" | "why did the agent do X" | "root-cause this behavior"
 ---
+> **Não é skill invocável.** MODO ALVO = OUTPUT DE AGENTE de `diagnose` — carregado por ela, não resolvido pelo router.
+
+
+
 
 # Skill: Trace
 
 ## Propósito
 
-Reverse-engineer por que um agente produziu um output inesperado. Identificar qual parte do agent file (identidade, restrições, modelo, tools) habilitou ou causou o comportamento — para que a correção seja cirúrgica.
+Reverse-engineer por que um agente produziu um output inesperado. Identificar qual parte do agent file (identidade, restrições, modelo, tools) habilitou ou causou o comportamento — para que hill corrija cirurgicamente.
 
-**Escopo:** `trace` diagnostica comportamento inesperado (pode ser seguro mas errado), diferente de uma auditoria de segurança. E `trace` encontra a causa-raiz *antes* de qualquer mudança — não é o passo que aplica a correção iterativamente.
+**Diferença de guard:** guard audita por vulnerabilidades de segurança. `trace` diagnostica comportamento inesperado (pode ser seguro mas errado).
+
+**Diferença de hill:** hill melhora iterativamente. `trace` encontra a causa-raiz antes de qualquer mudança.
 
 ---
 
@@ -21,26 +27,23 @@ Ative quando:
 - Agente recusou tarefa que deveria aceitar (ou aceitou o que deveria recusar)
 - Agente usou modelo errado para a fase
 - Comportamento inconsistente entre runs similares
-- Antes de aplicar uma correção, quando o problema é específico (não generalizado)
+- Antes de `@harden` quando o problema é específico (não generalizado)
 
-NÃO ative para: avaliação geral de qualidade; auditoria de segurança; validação pós-implementação.
-
----
-
-## Modelo por Etapa
-
-| Etapa | Modelo | Razão |
-|-------|--------|-------|
-| Coleta de contexto do output | Haiku | Estruturação mecânica |
-| Leitura e análise do agent file | Sonnet | Identificação de ambiguidade e lacunas |
-| Reconstrução da cadeia causal | Sonnet | Raciocínio de causa-raiz |
-| Diagnóstico + recomendação cirúrgica | Sonnet | Proposta de correção mínima |
+NÃO ative para: avaliação geral de qualidade (→ hill); audit de segurança (→ guard); validação pós-implementação (→ verify).
 
 ---
+
+## Perfil de modelo
+
+Herda o perfil de `diagnose`. Mode spec nao declara perfil proprio:
+e carregado por diagnose e roteia junto com ela — perfil local aqui
+seria uma segunda fonte de verdade para a mesma execucao.
+
+Resolucao canonica em model-routing.
 
 ## Protocolo
 
-### 1. Coletar Contexto *(Haiku)*
+### 1. Coletar Contexto
 
 Extrair da descrição do usuário:
 - **Output inesperado:** o que o agente fez (exato, não parafrasear)
@@ -50,9 +53,9 @@ Extrair da descrição do usuário:
 
 Se faltarem informações: fazer 1 pergunta por lacuna. Não prosseguir sem output + esperado + input.
 
-### 2. Ler Agent File *(Sonnet)*
+### 2. Ler Agent File
 
-Ler o arquivo de definição do agente por completo. Mapear:
+Ler `<agent-file>.md` completo. Mapear:
 - Identidade declarada (o que o agente diz que é)
 - Restrições explícitas (seção "Restrições")
 - Tools declaradas (frontmatter `tools`)
@@ -60,7 +63,7 @@ Ler o arquivo de definição do agente por completo. Mapear:
 - Triggers e condições de ativação
 - Fora do escopo
 
-### 3. Reconstruir Cadeia Causal *(Sonnet)*
+### 3. Reconstruir Cadeia Causal
 
 Percorrer o agent file tentando reproduzir o raciocínio que levou ao output inesperado:
 
@@ -80,7 +83,7 @@ Hipótese 3: [ambiguidade — instrução que poderia ser interpretada de dois j
 
 Rankear hipóteses por probabilidade (mais provável primeiro).
 
-### 4. Diagnóstico Final *(Sonnet)*
+### 4. Diagnóstico Final
 
 ```
 TRACE REPORT: <slug> v<versão>
@@ -98,43 +101,12 @@ CAUSAS SECUNDÁRIAS (se houver):
   [lista]
 
 CORREÇÃO SUGERIDA:
-  Arquivo: <caminho do agent file>
+  Arquivo: <agent-file>.md
   Seção: <nome da seção>
   Mudança: [texto exato a adicionar/modificar — mínimo necessário]
   Justificativa: [por que essa mudança específica resolve sem efeitos colaterais]
 
-PRÓXIMO PASSO: aplicar a correção com esta análise como contexto inicial
-```
-
----
-
-## Exemplo
-
-**Input:** "O agente `summarizer` recebeu um artigo de 3 páginas e devolveu o texto quase inteiro em vez de um resumo curto."
-
-**Trace:**
-
-```
-TRACE REPORT: summarizer v1.2
-
-Input: artigo de 3 páginas + "resuma isto"
-Output inesperado: ~90% do texto original reproduzido
-Output esperado: resumo de 3-5 bullets
-
-CAUSA-RAIZ MAIS PROVÁVEL:
-  Tipo: LACUNA
-  Localização: seção "Protocolo":linha ~20
-  Mecanismo: o protocolo diz "preserve os pontos-chave" mas nunca define
-  um limite de tamanho de saída — sem teto, o modelo minimiza perda de
-  informação reproduzindo quase tudo.
-
-CAUSAS SECUNDÁRIAS:
-  Ambiguidade em "pontos-chave" (nenhum critério de seleção).
-
-CORREÇÃO SUGERIDA:
-  Seção: Protocolo
-  Mudança: adicionar "Saída máxima: 5 bullets ou 120 palavras."
-  Justificativa: teto explícito força seleção sem tocar no resto do agente.
+PRÓXIMO PASSO: "@harden <slug>" com esta análise como contexto inicial
 ```
 
 ---
@@ -149,14 +121,14 @@ CORREÇÃO SUGERIDA:
 ## Failure modes
 
 - **"Causa desconhecida"**: trace conclui sem hipóteses → sempre listar mínimo 2, mesmo se low-probability
-- **Reescrita sugerida**: correção excede 3 linhas → correções são edits cirúrgicos, não rewrites
-- **Skip da cadeia causal**: trace pula direto para correção sem reconstruir como o agent file habilitou o comportamento → sem diagnóstico, quem aplica não tem contexto
+- **Reescrita sugerida**: correção excede 3 linhas → hill não aplica rewrites, apenas edits cirúrgicos
+- **Skip da cadeia causal**: trace pula direto para correção sem reconstruir como o agent file habilitou o comportamento → sem diagnóstico, hill não tem contexto para aplicar
 
 ---
 
 ## Restrições
 
-- NUNCA aplicar a correção sugerida diretamente — apenas diagnosticar
+- NUNCA aplicar a correção sugerida diretamente — apenas diagnosticar (hill aplica)
 - NUNCA concluir "causa desconhecida" sem listar pelo menos 2 hipóteses
 - NUNCA sugerir reescrita do agent file — correção deve ser mínima (1-3 linhas)
 - Se o problema for reproduzível apenas com contexto específico: documentar as condições exatas
@@ -165,7 +137,7 @@ CORREÇÃO SUGERIDA:
 
 ## Relacionado
 
-- Um passo de melhoria iterativa consome o diagnóstico do trace para aplicar a correção.
-- Traces de segurança seguem caminho diferente (checklist OWASP LLM).
-- Geração de casos de teste é upstream: gera casos; trace investiga casos que já falharam.
-- Ver skill `diagnose` — trace é para agentes (reverse-engineer do agent file); diagnose é para código/sistema geral (debugging loop disciplinado).
+- hill-mode — consome o diagnóstico do trace para aplicar correção
+- guard — security traces seguem caminho diferente (OWASP LLM checklist)
+- probe — probe gera casos, trace investiga casos que já falharam
+- `diagnose` — trace é para agentes (reverse-engineer do agent file); diagnose é para código/sistema geral (debugging loop disciplinado)

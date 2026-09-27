@@ -1,11 +1,10 @@
 ---
 name: diagnose
-description: Loop de debugging disciplinado para falhas que resistiram a 1+ tentativas diretas. Constrói um feedback loop tight e red-capable, depois reproduce → minimise → hypothesise → instrument → fix → regression. Proibido fixar sem hipótese confirmada.
+description: "Use when: executar loop de debugging disciplinado para falhas que resistiram a 1+ tentativas diretas — proibido pular etapas ou fixar sem hipótese confirmada. MODO ALVO=SESSÃO DE AGENTE: sessão de agente em loop de tool calls, retry storm (429), context overflow, drift de prompt ou alucinação de path — capturar evidência, classificar, recovery reversível, introspection report."
 trigger: "@diagnose [bug]" | "/diagnose [bug]" | "diagnose this" | "debug this" | "isso não resolve, me ajuda a diagnosticar"
-version: 2.0
-source: mattpocock/skills (diagnosing-bugs)
-tags: [debugging, diagnosis, root-cause, loop, coding, tight, red-capable]
 ---
+
+
 
 # Skill: Diagnose
 
@@ -27,21 +26,33 @@ NÃO ative para: erros óbvios de sintaxe; falhas já diagnosticadas aguardando 
 
 ---
 
-## Modelo por Etapa
+## Perfil de modelo
 
-Para reduzir custo, use um modelo mais barato nas etapas mecânicas (loop, reproduce, minimise, regression) e um modelo mais forte nas etapas de raciocínio (hypothesise, instrument, fix).
-
-| Etapa | Modelo | Justificativa |
-|-------|--------|---------------|
-| Build feedback loop | barato/rápido | Coleta criativa de evidências, mecânica |
-| Reproduce + Minimise | barato/rápido | Leitura mecânica, coleta de evidências |
-| Hypothesise | mais forte | Raciocínio causal, múltiplas hipóteses |
-| Instrument + Fix | mais forte | Implementação dirigida por hipótese |
-| Regression Test | barato/rápido | Verificação estruturada |
-
----
+Perfil `deep` — diagnostico e a linha textual do perfil no catalog; a etapa Hypothesise carrega
+o raciocinio causal de que o resto do loop depende
+(model-routing §Padrao custo-efetivo; model-catalog §Perfis).
+Esta skill nao mantem pins locais por etapa.
 
 ## Protocolo de Execução
+
+### ETAPA -1 — Selecionar ALVO (obrigatório antes da ETAPA 0)
+
+O que falhou?
+
+- **Código, build, teste, dado** → ALVO = SOFTWARE. Seguir ETAPA 0 abaixo.
+- **Output de um agente** (agente disse/fez algo inesperado; a pergunta é *qual
+  parte do agent file habilitou isso*) → ALVO = OUTPUT DE AGENTE. Carregar
+  `trace` e executar por lá. Não seguir
+  para a ETAPA 0.
+- **Sessão de agente em falha agora** (loop de tool calls, retry storm 429,
+  context overflow, drift de prompt, alucinação de path — a pergunta é *como
+  conter e recuperar*) → ALVO = SESSÃO DE AGENTE. Executar a seção
+  `## MODO ALVO = SESSÃO DE AGENTE` abaixo. Não seguir
+  para a ETAPA 0.
+
+Teste que separa os dois alvos de agente: OUTPUT DE AGENTE é atribuição estática
+sobre um output já produzido; SESSÃO DE AGENTE é recuperação de uma sessão viva
+em falha.
 
 ### ETAPA 0 — Build a Tight Feedback Loop
 
@@ -175,37 +186,6 @@ NOVO TESTE: <path do arquivo criado, se aplicável>
 
 ---
 
-## Exemplo
-
-**Input:** "@diagnose meu endpoint /checkout retorna 500 intermitente em produção, ~1 em cada 20 requests. Já reiniciei o serviço, não adiantou."
-
-**Trajetória (resumida):**
-```
-LOOP: (7) property/fuzz — script que dispara /checkout 200× contra staging
-COMMAND: node stress-checkout.js --n 200
-OUTPUT: 11/200 responderam 500; todas com carrinho de >5 itens
-TIGHT: flaky ~5% → subido para ~90% ao filtrar carrinhos grandes
-
-REPRODUCE: sim (após narrow para carrinho grande)
-MINIMAL CASE: 1 request com 6+ itens dispara 500 de forma determinística
-REMOVED: auth, cupom, endereço — irrelevantes
-
-H1: pool de conexões do DB esgota com N queries por item | Prevê: erro de timeout no pool | P: alta
-H2: serialização de JSON estoura limite de payload | P: baixa
-TESTAR PRIMEIRO: H1
-
-INSTRUMENTAÇÃO: log de checkouts do pool antes/depois do loop de itens
-EVIDÊNCIA: pool chega a 0 disponíveis em carrinhos >5 itens (query por item em loop)
-CONCLUSÃO: H1 confirmada
-
-FIX: batch da query por-item em uma única query IN(...); instrumentação removida
-CASO MÍNIMO: passou
-SUITE: passou (0 regressões)
-NOVO TESTE: __tests__/checkout-large-cart.test.js
-```
-
----
-
 ## Completion
 
 - [ ] ETAPA 1 Reproduce: bug confirmado (sim/não/flaky) com input exato documentado
@@ -220,7 +200,7 @@ NOVO TESTE: __tests__/checkout-large-cart.test.js
 - **Fix sem hipótese**: pular ETAPA 3-4 e fixar por gut feeling → proibido, hipótese confirmada é obrigatória
 - **Múltiplos fixes simultâneos**: mudar 2+ coisas entre runs → isola variável, um fix por vez
 - **Skip do Minimise**: testar no contexto grande → mascara causa-raiz, sempre isolar
-- **Hipóteses esgotadas**: ETAPA 3 sem confirmação → escalar para uma exploração multi-trajetória com o minimal case, não forçar fix
+- **Hipóteses esgotadas**: ETAPA 3 sem confirmação → chamar `heavy-think` com minimal case, não forçar fix
 
 ---
 
@@ -229,7 +209,7 @@ NOVO TESTE: __tests__/checkout-large-cart.test.js
 - **Proibido fixar sem hipótese confirmada** — gut feeling não conta
 - **Proibido pular MINIMISE** — testar em contexto grande mascara a causa
 - **Proibido múltiplos fixes simultâneos** — isola a variável
-- **Se ETAPA 3 esgotar hipóteses sem confirmação**: escalar para uma exploração multi-trajetória com o minimal case
+- **Se ETAPA 3 esgotar hipóteses sem confirmação**: chame `heavy-think.md` com o minimal case
 
 ---
 
@@ -238,6 +218,86 @@ NOVO TESTE: __tests__/checkout-large-cart.test.js
 - Teste de regressão adicionado (se ausente)
 - Relatório inline no formato por etapa acima
 
----
 
-*Adaptado de mattpocock/skills (diagnosing-bugs).*
+## Quando NÃO usar
+
+- **Erro óbvio de sintaxe/typo** — corrigir direto; loop de diagnóstico é overhead.
+- **Falha já diagnosticada aguardando fix** — diagnose termina na causa confirmada; implementar é de `core/implement`.
+- **Tarefa sem componente de bug** (feature, refactor, docs) — diagnose é loop de debugging, não execução.
+- **Bug com 0 tentativas diretas** — a skill assume 1+ falha; primeira tentativa pode ser direta, sem o loop.
+
+Disambiguation: `reasoning/diagnose` é o loop disciplinado para falhas resistentes; `systematic-debugging` não existe em automation — use `reasoning/diagnose` (fase 0 de diagnóstico precede — diagnose absorve o padrão, não o substitui); `core/tdd` escreve o teste de regressão depois da causa confirmada.
+
+## Modos absorvidos (R3)
+
+`kind: reference` — carregue o spec do modo pedido e execute-o com esta skill como base.
+
+- **MODO ALVO = OUTPUT DE AGENTE** — `trace`
+- **MODO ALVO = SESSÃO DE AGENTE** — seção abaixo; absorvido de
+  agent-fault-debug
+
+## MODO ALVO = SESSÃO DE AGENTE
+
+Sessão de agente **viva** em falha: conter e recuperar. Aqui não há loop
+red-capable a construir; o insumo irrecuperável é a evidência da sessão, e a
+ordem é lei: evidência antes de ação, retry só depois do diagnóstico.
+
+**Não usar quando:** o alvo é código ou output (ETAPA 0 ou OUTPUT DE AGENTE);
+transcript/log já se perdeu (reportar que não há evidência e aguardar
+recorrência); a falha é de infraestrutura provada (API fora para todos, rede,
+credencial, quota zerada); é a primeira execução de skill nova (rodar de novo
+com input completo); a instrução mudou no meio (renegociar, não debugar); não
+dá para citar o sintoma.
+
+**S0 — Capturar evidência antes de mexer.** Nada de kill, restart ou limpar
+histórico antes. Transcript/log citado literal: (a) timestamp do início do
+sintoma; (b) sequência exata das últimas tool calls, input→output; (c) texto do
+erro com status code; (d) número de repetições; (e) estado real do mundo (paths,
+arquivos). Critério: responde "o que o agente fez, nesta ordem, e onde parou"
+sem depender de memória.
+
+**S1 — Classificar o padrão.**
+
+| Padrão | Sintoma observável | Causa provável | Check + recovery |
+|---|---|---|---|
+| Loop de tool calls | Mesma chamada ≥3× com input/output idênticos; zero progresso | Objetivo ambíguo; tool sem efeito visível no estado | Check: o estado real mudou entre chamadas? Recovery: abortar; reafirmar o objetivo em 1 frase; verificar o mundo real; encolher para 1 passo |
+| Retry storm 429 | 429/503 em sequência com retry imediato; backoff ausente ou <1s | Retry-After ignorado; paralelismo excessivo | Check: há Retry-After? Recovery: parar retries; backoff ≥60s; serializar; reduzir concorrência |
+| Context overflow | Erro de token; instruções iniciais truncadas; agente "esquece" o objetivo | Histórico acumulado; tool output gigante | Check: contexto vs limite. Recovery: compactar; tool output para arquivo + ponteiro; subagente de compressão; nunca continuar sem compactar |
+| Drift de prompt | Age fora da instrução; cita política inexistente; contradiz a skill | Instrução canônica soterrada ou contradita | Check: a instrução original está no contexto? Recovery: reler skill/AGENTS.md; reafirmar citando a linha; remover a instrução conflitante |
+| Alucinação de path | Lê/escreve path inexistente; inventa conteúdo; cria estrutura sem pedido | Path deduzido do nome, não verificado | Check: o path existe? Recovery: usar o path real; nada de path novo sem confirmação; reverter escrita feita |
+
+Dois padrões juntos (ex.: overflow causando drift) são tratados os dois.
+
+**S2 — Um check discriminante.** Uma observação que separa as causas
+candidatas, um check por vez, resultado registrado (confirma/descarta) antes de
+qualquer recovery. Ordem: reafirmar objetivo → verificar mundo real → encolher
+escopo → check → só então retry.
+
+**S3 — Recovery contido.** Menor ação reversível primeiro (parar retries,
+reafirmar instrução, editar 1 linha) antes de destrutiva (kill, reescrita,
+reinício). Anotar o estado anterior antes de cada ação. Retry sem diagnóstico
+repete o sintoma e, em 429, piora o rate limit.
+
+**S4 — Introspection report** (na resposta final):
+
+| Campo | Registrar |
+|---|---|
+| sintoma | Erro/log citado literal + timestamp inicial |
+| padrão | Linha da tabela S1, ou "fora da tabela" + justificativa |
+| evidência | Tool calls, repetições, estado real |
+| causa | Hipótese confirmada + check que a confirmou; não confirmada = `[hyp]` |
+| ação | O que foi feito, em que ordem, quão reversível |
+| resultado | done/falhou + critério observado, sem maquiagem |
+| lição | 1 linha acionável contra recorrência |
+
+**S5 — Lição (opcional).** Durável → 1 linha no arquivo de lições do projeto (ex. `lessons.md`), depois de conferir se já não existe.
+
+**Completion do modo:** evidência capturada antes de qualquer ação; padrão
+classificado; check executado e registrado; recovery reversível com estado
+anterior anotado; report completo. Falha declarada com evidência também é
+término; sucesso sem evidência não é.
+
+Exemplo: pipeline-drain repete a mesma ingestão 6× em 40s com 429 e
+`Retry-After: 60` → retry storm; check confirma backoff ignorado; abort + 1
+retry após 60s + fases serializadas; lição: retry de pipeline-drain respeita
+Retry-After, >3 repetições = abortar e escalar.

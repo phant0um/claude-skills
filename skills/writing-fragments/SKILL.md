@@ -1,12 +1,12 @@
 ---
 name: writing-fragments
-description: Writing, explore — mine raw fragments, no structure yet.
+description: "Use when: ainda não há pile — entrevistar o usuário e minerar fragmentos soltos sobre o que ele quer escrever, sem impor estrutura. Produz o arquivo de pile que `writing-shape` consome. Explore, não exploit: estruturar é trabalho de writing-shape."
 trigger: ["escrever artigo", "rascunho", "redação", "fragmentos", "moldar texto", "write an article", "brainstorm fragments", "draft ideas"]
 ---
 
 <what-to-do>
 
-This is pure **explore**: widen the space of what could be written without committing to structure — committing is _exploit_, a separate skill's job. Run a grilling session that produces fragments, interviewing the user relentlessly about whatever they want to write about. Imposing phases, outlines, or article structure is out of scope here.
+This is pure **explore**: widen the space of what could be written without committing to structure — committing is _exploit_, and that is `writing-shape`'s job. Run a grilling session that produces fragments, interviewing the user relentlessly about whatever they want to write about. Imposing phases, outlines, or article structure is out of scope here.
 
 As fragments emerge from either side of the conversation, append them to a single markdown file.
 
@@ -19,6 +19,15 @@ On first write, put a single H1 at the top with a working title (it can change l
 </what-to-do>
 
 <supporting-info>
+
+## Quando NÃO usar
+
+- **Já existe pile** — o material bruto está reunido e o trabalho é moldá-lo: `writing-shape`. Esta skill *produz* a pile; aquela a *consome*.
+- **Rascunho com destino definido** (blog, publicação) — `article-draft` decide destino e registro; esta não decide nada.
+- **Texto já escrito** — revisão de estrutura é `content-design-review`, voz é `voice-registers`.
+- **Divergência de opções de decisão** (não de escrita) — `brainstorm`.
+
+Disambiguation vs `writing-shape`: mesma família, fases opostas. Se o usuário chega com arquivo de material, é shape. Se chega só com uma vontade de escrever, é esta.
 
 ## What is a fragment
 
@@ -76,28 +85,22 @@ Before every write: re-read the file from disk. The user may have edited, reorde
 
 The user can say "cut the last one", "rewrite that one sharper", "merge those two" at any time. Treat those as first-class instructions.
 
-## Exemplo
+## Handoff
 
-**User says**, unprompted, while talking about a debugging story:
-
-> "Honestly the worst part was that the bug only showed up on Tuesdays. We spent
-> a week before someone noticed the batch job ran a different config on Tuesdays."
-
-**You append** two fragments — the vignette, and a candidate leading word coined from it:
-
-```markdown
----
-
-We spent a week hunting a bug that only appeared on Tuesdays. Turned out a batch
-job loaded a different config that one day. Nobody looks for a calendar in a
-stack trace.
-
----
-
-Leading word: **the Tuesday bug** — a defect gated on a condition nobody thinks
-to check because it lives outside the code.
-```
-
-You mention it in passing ("noting the Tuesday thing") and keep interviewing.
+Quando o usuário disser que a pile está boa, pare. Não estruture. Diga o path da pile e aponte `writing-shape` como próximo passo — a decisão de moldar é dele, não desta skill.
 
 </supporting-info>
+
+## Completion
+
+- [ ] Fragmentos minerados e registrados em 1 arquivo de pile, sem reescrita.
+- [ ] Fonte citada no arquivo; fragmentos sem estrutura (sem organizar).
+- [ ] Arquivo relido do disco antes de cada append.
+- [ ] Handoff para `writing-shape` oferecido, não executado.
+
+## Failure modes
+
+- **Estruturar cedo**: ordenar, titular ou agrupar fragmentos → proibido; estruturar é `writing-shape`.
+- **Sobrescrever a pile**: gravar sem reler do disco apaga edição do usuário → releia antes de cada append e só anexe.
+- **Pedir permissão a cada fragmento**: diálogo de save interrompe a conversa → anexe em silêncio e mencione de passagem.
+- **Executar o handoff**: começar a moldar quando a pile fica boa → pare, diga o path e aponte `writing-shape`.

@@ -16,7 +16,6 @@ Skill entra em `claude-skills` só se **serve fora do vault de origem**. Teste: 
 | content-design-review | após redigir, antes de salvar | Validador estrito pareado: audita as 5 regras, veredito por linha, não reescreve |
 | writing-fragments | "@fragments", explorar material cru | Minerar fragmentos, sem estrutura ainda |
 | writing-shape | "@shape", moldar rascunho | Material → artigo, parágrafo a parágrafo |
-| writing-beats | "@beats", montar narrativa | Jornada de beats, cada termo fundamentado antes de usar |
 | writing-great-skills | criar/revisar SKILL.md | Vocabulário + princípios p/ skill previsível |
 
 ### reasoning/ — deliberação, diagnóstico
@@ -28,7 +27,6 @@ Skill entra em `claude-skills` só se **serve fora do vault de origem**. Teste: 
 | pre-mortem | "@pre-mortem", plano de alto risco | Prospective hindsight: "o plano já falhou, como?" |
 | office-hours | "@office-hours", pressionar ideia | 6 forcing-questions estilo YC |
 | grill-me | "grill me", antes de codar | Perguntas duras, uma por vez |
-| doubt-driven-development | "@doubt", validar premissas | Enumera + classifica premissas por risco |
 | diagnose | "diagnose", bug resistente | Loop disciplinado, fix só com hipótese confirmada |
 | trace | "@trace", output inesperado de agente | Reverse-engineer qual parte do agent file causou |
 

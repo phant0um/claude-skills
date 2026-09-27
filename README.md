@@ -43,7 +43,7 @@ Sem hipótese confirmada, cada "fix" é aposta. O loop não fecha.
 
 ### Skills que não disparam, ou derrapam depois de disparar
 
-→ **`writing-great-skills`** é a referência de vocabulário/princípios p/ escrever SKILL.md previsível. **`grill-me`** e **`doubt-driven-development`** pressionam premissas antes de construir.
+→ **`writing-great-skills`** é a referência de vocabulário/princípios p/ escrever SKILL.md previsível. **`grill-me`** pressiona premissas antes de construir — entrevista adversarial, ou `MODO PREMISSAS` (enumera e classifica premissas sozinho, sem entrevista).
 
 ---
 
@@ -61,8 +61,7 @@ Skills têm dois modos de disparo:
 | [content-design](skills/content-design/SKILL.md) | model | 5 regras front-load p/ artefato persistido |
 | [content-design-review](skills/content-design-review/SKILL.md) | user | Validador estrito pareado — veredito por linha |
 | [writing-fragments](skills/writing-fragments/SKILL.md) | user | Minerar fragmentos crus, sem estrutura ainda |
-| [writing-shape](skills/writing-shape/SKILL.md) | user | Moldar material em artigo, parágrafo a parágrafo |
-| [writing-beats](skills/writing-beats/SKILL.md) | user | Montar material numa jornada de beats fundamentados |
+| [writing-shape](skills/writing-shape/SKILL.md) | user | Moldar material em artigo — parágrafo a parágrafo ou beat a beat |
 | [writing-great-skills](skills/writing-great-skills/SKILL.md) | user | Referência p/ escrever/revisar SKILL.md previsível |
 
 ### reasoning/
@@ -73,8 +72,7 @@ Skills têm dois modos de disparo:
 | [debate](skills/debate/SKILL.md) | user | Confronto formal 2 perspectivas + arbitragem |
 | [pre-mortem](skills/pre-mortem/SKILL.md) | user | Prospective hindsight — "o plano já falhou, como?" |
 | [office-hours](skills/office-hours/SKILL.md) | user | 6 forcing-questions estilo YC p/ pressionar ideia |
-| [grill-me](skills/grill-me/SKILL.md) | user | Perguntas duras, uma por vez, antes de codar |
-| [doubt-driven-development](skills/doubt-driven-development/SKILL.md) | user | Enumera + classifica premissas por risco |
+| [grill-me](skills/grill-me/SKILL.md) | user | Entrevista adversarial antes de codar + modo premissas |
 | [diagnose](skills/diagnose/SKILL.md) | user | Loop de debug disciplinado, fix só com hipótese |
 | [trace](skills/trace/SKILL.md) | user | Reverse-engineer output inesperado de agente |
 
@@ -86,8 +84,8 @@ Regra de escopo → [CLAUDE.md](CLAUDE.md).
 
 Estas skills adaptam padrões públicos. Crédito às fontes:
 
-- **[mattpocock/skills](https://github.com/mattpocock/skills)** — `diagnose` (diagnosing-bugs), `grill-me`, `writing-great-skills`, `writing-fragments`, `writing-shape`, `writing-beats`.
-- **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)** — `doubt-driven-development`.
+- **[mattpocock/skills](https://github.com/mattpocock/skills)** — `diagnose` (diagnosing-bugs), `grill-me`, `writing-great-skills`, `writing-fragments`, `writing-shape`.
+- **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)** — `MODO PREMISSAS` do `grill-me` (ex-doubt-driven-development).
 - **Claude Council** (padrão 5-advisor) — `council`.
 - **Gary Klein** (prospective hindsight, HBR) + endosso de Daniel Kahneman — `pre-mortem`.
 - **Garry Tan / Y Combinator** (office hours) — `office-hours`.

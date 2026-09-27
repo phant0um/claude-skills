@@ -1,6 +1,6 @@
 {
   "name": "claude-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Skills reutilizáveis p/ Claude Code — writing, reasoning, ingest, dev. Extraídas de um vault Obsidian operando como SO de agentes.",
   "author": {
     "name": "phant0um",
