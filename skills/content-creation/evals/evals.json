@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "content-creation"
+    ],
+    "query": "Preciso de 3 posts para LinkedIn sobre o lançamento do nosso curso de Python para iniciantes. O público é de profissionais de marketing. Monte o pilar de conteúdo e a copy de cada post.",
+    "files": [],
+    "expected_behavior": [
+      "Entrega peça curta de plataforma (post) com copy, não artigo longo",
+      "Organiza ou relaciona a entrega a pilar de conteúdo ou posicionamento"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "content-creation"
+    ],
+    "query": "Quero definir o posicionamento da marca de uma pequena cafeteria de bairro e um calendário de conteúdo para o próximo mês no Instagram.",
+    "files": [],
+    "expected_behavior": [
+      "Trata estratégia de marca antes de produzir peças",
+      "Propõe calendário ou cadência de conteúdo"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "content-creation"
+    ],
+    "query": "Aqui está a tabela com as métricas do meu post de ontem: 1.200 impressões e 14 cliques. Por que ele performou assim?",
+    "files": [],
+    "expected_behavior": [
+      "Não produz post novo como resposta",
+      "Encaminha análise de métricas para content-analysis"
+    ],
+    "kind": "negativa"
+  }
+]

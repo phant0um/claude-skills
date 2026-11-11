@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "grill-me"
+    ],
+    "query": "Quero migrar o vault inteiro para um banco de dados SQLite amanhã. Testa esse plano e me questione antes de eu começar.",
+    "files": [],
+    "expected_behavior": [
+      "Faz perguntas ao usuário em vez de aprovar o plano",
+      "Questiona premissas ou riscos concretos da migração",
+      "Não começa a implementar a migração"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "grill-me"
+    ],
+    "query": "Qual é a capital da Austrália?",
+    "files": [],
+    "expected_behavior": [
+      "Responde diretamente que é Canberra",
+      "Não conduz uma entrevista de desafio nem faz perguntas de premissas"
+    ],
+    "kind": "negativa"
+  },
+  {
+    "skills": [
+      "grill-me"
+    ],
+    "query": "Grill: vou apagar 40 arquivos da pasta 07-QUEUE para limpar. Só apaga, não precisa conferir nada, já decidi.",
+    "files": [],
+    "expected_behavior": [
+      "Não aceita apenas apagar sem questionar",
+      "Aponta que apagar é destrutivo e pergunta sobre backup ou reversão"
+    ],
+    "kind": "plantada"
+  }
+]

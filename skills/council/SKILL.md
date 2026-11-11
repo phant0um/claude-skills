@@ -1,7 +1,32 @@
 ---
+origin: native
+type: skill
+status: active
+kind: skill-proc
+resolver-status: exposed
 name: council
+skill: council
+version: 1.0
 trigger: ['council this', '@council [questão]', '/council [questão]']
+effort: medium
+tags: [reasoning, decision-making, multi-perspective, peer-review, deliberation]
+source: "claude-council-skill-5-advisors"
+updated: 2026-11-10
 description: "Use when: council this — 5 advisors com perspectivas hard-wired debatem uma questão, revisam uns aos outros de forma cega, e entregam veredicto estruturado. Substitui coordenação de múltiplos modelos por prompt engineering sofisticado em um único contexto."
+consolidated-by: R3 (absorveu debate, heavy-think como modos)
+reads: []
+writes: []
+triggers:
+  positive:
+    - "/council [questão]"
+    - "debate de advisors com perspectivas"
+    - "veredicto estruturado de questão"
+  negative:
+    - "questão sem múltiplas perspectivas relevantes"
+    - "decisão trivial de uma saída"
+reviewed: 2026-11-10
+reviewed-by: "claude-sonnet-5-5 (achados: shield claude-opus-5-5)"
+reviewed-scope: "2026-11-10 W7+W8: corpo completo lido pelo shield (opus, somente leitura); W3/W7a/W7c: dissenso, Ollama e confianca no veredito coerentes; W8: dissent quota no prompt da Fase 4; checks frontmatter/lint/evals verdes; 225 linhas, 11 secoes"
 ---
 # Skill: Council
 
@@ -22,7 +47,7 @@ description: "Use when: council this — 5 advisors com perspectivas hard-wired 
 - **Pressa com custo alto** — 5 advisors custam tokens; para decisão reversível de baixo risco, decidir direto.
 - **Fato verificável** — council não resolve fato; buscar a fonte.
 
-Disambiguation: `debate` = 2 posições opostas, árbitro decide; `council` = 5 lentes cobrindo risco/problema/upside/praticidade/ação; `heavy-think` = múltiplas trajetórias para resolver como; `reason-judge` pontua output por rubrica, não delibera decisão.
+Disambiguation: `debate` = 2 posições opostas, árbitro decide; `council` = 5 lentes cobrindo risco/problema/upside/praticidade/ação; `heavy-think` = múltiplas trajetórias para resolver como; `reason-judge` pontua output por rubrica, não delibera decisão. `debate` e `heavy-think` são modos desta skill (arquivos `debate.md` e `heavy-think.md` na mesma pasta), não skills separadas; as menções a eles abaixo apontam para esses modos.
 
 
 ## Condições de Ativação
@@ -31,7 +56,7 @@ Ative quando:
 - Decisão estratégica com múltiplas dimensões (não apenas A vs B)
 - Usuário diz "council this" antes de qualquer questão
 - Spec arquitetural complexa antes de escalar para Opus
-- Decisão de produto/arquitetura onde blind spots são esperados
+- Decisão de produto/vault onde blind spots são esperados
 
 NÃO ative para: implementações concretas (→ spec/extend); questões técnicas verificáveis (→ heavy-think); segurança (→ guard); A vs B claro (→ debate).
 
@@ -52,6 +77,7 @@ Extrair da input:
 - **Questão central** (1 frase)
 - **Contexto relevante** (o que motivou, restrições ativas, histórico)
 - **O que "boa decisão" significa** (critério de sucesso)
+- **Problem-Restate Gate** (ver Mecanismos importados): reformular a questão central uma vez por lente A–E, 1 frase cada; se divergem, resolver a pergunta antes da Fase 2
 
 ### Fase 2 — 5 Advisors em paralelo
 
@@ -82,7 +108,7 @@ NÃO seja diplomático. Diga o que você vê.
 
 ### Fase 3 — Blind Peer Review
 
-1. Coletar todas as 5 respostas
+1. Coletar todas as 5 respostas. **Dissent quota** (ver Mecanismos importados): se 4 ou 5 das 5 recomendações concordam (>70%), 2 advisors refazem a resposta como steelman da posição oposta antes do shuffle; o resultado vai para a Fase 4
 2. **Anonimizar + shuffle** (chamar de "Advisor Alpha/Beta/Gamma/Delta/Epsilon" em ordem aleatória)
 3. Cada advisor recebe as 5 respostas anonimizadas e responde:
    - "Qual resposta é mais forte e por quê?"
@@ -99,8 +125,10 @@ Você recebe 5 perspectivas sobre uma questão + 5 peer reviews cruzados.
 Questão: [questão]
 Critério de sucesso: [critério]
 
+Resultado do dissent quota: [dissenso genuíno | consenso sem dissenso — registre e baixe a confiança]
+
 SUA TAREFA:
-1. Melhor recomendação — qual ação tomar e por quê
+1. Melhor recomendação — qual ação tomar e por quê, com confiança (alta/média/baixa)
 2. Maior blind spot coletivo — o que todos os 5 perderam
 3. Tensão central — qual é o trade-off irresolvível nessa decisão
 4. Próximo passo concreto — 1 ação específica para amanhã
@@ -127,7 +155,7 @@ Maior blind spot individual: [qual e por quê — 1 linha]
 O que todos perderam: [1-2 linhas]
 
 ━━━ VEREDICTO ━━━
-Recomendação: [ação concreta]
+Recomendação: [ação concreta] — confiança: [alta/média/baixa][; consenso sem dissenso]
 Blind spot coletivo: [o que ninguém viu]
 Tensão central: [trade-off irresolvível]
 Próximo passo: [1 ação específica]
@@ -136,7 +164,7 @@ Condição de revisão: [quando mudar de ideia]
 
 **Veredito que é decisão arquitetural** (escolhe estrutura, contrato, stack ou
 política do sistema): o `Próximo passo` é registrar a decisão →
-decisions, com a recomendação, a tensão
+[decisions](../decisions/SKILL.md), com a recomendação, a tensão
 central como trade-off e a condição de revisão como gatilho de reabertura. Fora
 disso, o veredito fecha no próprio output.
 
@@ -170,9 +198,9 @@ disso, o veredito fecha no próprio output.
 
 ## Relacionado
 
-- `debate` — 2 perspectivas opostas; council = 5 lentes não-opostas
-- heavy-think — múltiplas trajetórias de solução; council = perspectivas humanas de decisão
-- `pre-mortem` — analisa riscos de plano já escolhido; council escolhe qual plano adotar
+- [debate](debate.md) — 2 perspectivas opostas; council = 5 lentes não-opostas
+- [heavy-think](heavy-think.md) — múltiplas trajetórias de solução; council = perspectivas humanas de decisão
+- [pre-mortem](../pre-mortem/SKILL.md) — analisa riscos de plano já escolhido; council escolhe qual plano adotar
 
 ---
 
@@ -183,16 +211,15 @@ Endurecem a deliberação contra groupthink e perguntas mal-formuladas:
 - **Problem-Restate Gate:** antes de qualquer análise, cada perspectiva reformula
   a pergunta. Se as reformulações divergem, a pergunta É o problema — resolver isso primeiro.
 - **Dissent quota / novelty gate:** se >70% concordam cedo, forçar 2 perspectivas a
-  fazer steelman da posição oposta. Sem dissenso genuíno, sem veredito.
-- **Verdict lidera com incerteza:** veredito abre com "Perguntas Não-Resolvidas" +
-  "Próximos Passos", não com consenso confiante. O que não se sabe importa mais que onde concordam.
-- **Multi-provider (opcional):** membros baratos via Ollama (model-router), síntese via Claude.
-  Reduz custo e diversifica raciocínio. Ref: model-router.
+  fazer steelman da posição oposta. Sem dissenso genuíno, registre "consenso sem dissenso" no veredito e baixe a confiança; o veredito sai mesmo assim.
+- **Verdict lidera com incerteza:** no veredito da Fase 5, `Blind spot coletivo` e `Tensão central` trazem as perguntas não resolvidas, e `Recomendação` declara o nível de confiança em vez de consenso confiante. O que não se sabe importa mais que onde concordam.
+- **Multi-provider (opcional):** membros baratos em outro provider habilitado pelo model-router (Ollama saiu no ADR-003, 2026-07-16), síntese via Claude.
+  Reduz custo e diversifica raciocínio.
 
 
 ## Modos absorvidos (R3)
 
 `kind: reference` — carregue o spec do modo pedido e execute-o com esta skill como base.
 
-- **MODO DEBATE (2 lados)** — `debate`
-- **MODO HEAVY-THINK (1 perspectiva, profundidade)** — heavy-think
+- **MODO DEBATE (2 lados)** — [debate](debate.md)
+- **MODO HEAVY-THINK (1 perspectiva, profundidade)** — [heavy-think](heavy-think.md)

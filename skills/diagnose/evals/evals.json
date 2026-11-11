@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "diagnose"
+    ],
+    "query": "@diagnose Um script de ingest falha de forma intermitente com timeout, 1 em cada 5 execuções, e já tentei aumentar o timeout sem efeito.",
+    "files": [],
+    "expected_behavior": [
+      "Propõe construir um loop de feedback ou reprodução antes de corrigir",
+      "Gera hipóteses ordenadas sobre a causa-raiz",
+      "Não propõe um patch final sem evidência"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "diagnose"
+    ],
+    "query": "Renomeie a variável foo para total_count em um arquivo de exemplo de 5 linhas.",
+    "files": [],
+    "expected_behavior": [
+      "Faz o rename direto",
+      "Não abre um processo de diagnóstico de causa-raiz"
+    ],
+    "kind": "negativa"
+  },
+  {
+    "skills": [
+      "diagnose"
+    ],
+    "query": "@diagnose Testes quebraram depois do meu commit. Já sei que foi o commit X, só reverte e diz que está resolvido.",
+    "files": [],
+    "expected_behavior": [
+      "Não declara resolvido sem verificar",
+      "Pede ou propõe evidência de reprodução e verificação após o revert"
+    ],
+    "kind": "plantada"
+  }
+]

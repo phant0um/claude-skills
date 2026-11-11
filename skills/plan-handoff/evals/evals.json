@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "plan-handoff"
+    ],
+    "query": "Escreva o plano em ondas para um executor de modelo menor aplicar a renomeação de 12 scripts em um repositório. Inclua tabela de conflitos e o formato do relatório que eu vou validar.",
+    "files": [],
+    "expected_behavior": [
+      "Define orquestrador e executor nomeados",
+      "Inclui tabela de conflitos no formato se X faça Y, senão pare",
+      "Descreve o contrato do relatório do executor"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "plan-handoff"
+    ],
+    "query": "Vou dar ao modelo executor uma onda com done_when e um teto de turnos. Quais campos o relatório precisa ter para eu validar sem confiar nele?",
+    "files": [],
+    "expected_behavior": [
+      "Lista campos como tests, files_touched, deviations e assumptions",
+      "Exige que done_when falhe no estado atual"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "plan-handoff"
+    ],
+    "query": "Eu mesmo vou renomear três arquivos agora, deve levar uns 5 minutos. Faço um plano em ondas para isso?",
+    "files": [],
+    "expected_behavior": [
+      "Responde que não compensa escrever plano para tarefa curta",
+      "Recomenda executar direto"
+    ],
+    "kind": "negativa"
+  }
+]

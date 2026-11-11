@@ -1,0 +1,34 @@
+[
+  {
+    "skills": ["codebase-design"],
+    "query": "Tenho um módulo Python `ingest_queue` com 14 funções públicas: enqueue, dequeue, retry, peek, reset, stats, dump, load, lock, unlock, prioritize, drain, purge e audit. Como desenhar uma interface mais profunda, com seam testável pela interface pública? Quero reduzir o número de operações expostas.",
+    "files": [],
+    "expected_behavior": [
+      "Propõe reduzir a interface pública para menos operações",
+      "Usa o vocabulário deep module: interface, implementação, seam, leverage",
+      "Explica onde o seam fica e por quê, com testes pela interface pública"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["codebase-design"],
+    "query": "O módulo de envio de notificações chama o SMTP e o relógio do sistema diretamente dentro de cada função. Quero melhorar a testabilidade. Como escolher o seam do módulo para testar pela interface pública?",
+    "files": [],
+    "expected_behavior": [
+      "Coloca o seam só onde há variação real, como SMTP e relógio",
+      "Recomenda testes pela interface pública, não pela implementação interna",
+      "Menciona exigir pelo menos dois adapters para justificar o seam"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["codebase-design"],
+    "query": "Renomeia a função `calc_total` para `calcular_total` em todo o arquivo. É só troca de nome, não precisa de decisão de design.",
+    "files": [],
+    "expected_behavior": [
+      "Não desenha módulo nem seam para uma renomeação",
+      "Responde que é edição mecânica fora do escopo de design"
+    ],
+    "kind": "negativa"
+  }
+]

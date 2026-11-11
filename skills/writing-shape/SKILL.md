@@ -1,7 +1,32 @@
 ---
+origin: native
+type: skill
+status: active
+version: "2.0.0"
+kind: skill-proc
+resolver-status: exposed
 name: writing-shape
 description: "Use when: transformar material bruto (pile) em artigo, escolhendo o grão — parágrafo a parágrafo ou beat a beat. Molda o SHAPE do texto; não decide destino nem revisa voz. Sem pile ainda, use `writing-fragments`; rascunho com destino use `article-draft`; voz use `voice-registers`."
-trigger: ["escrever artigo", "rascunho", "redação", "moldar texto", "shape this into an article", "structure my draft", "turn fragments into a piece"]
+triggers:
+  positive:
+    - "moldar texto"
+    - "transformar esse material em artigo"
+    - "estruturar o pile"
+    - "escrever artigo a partir desse arquivo"
+    - "beat a beat"
+  negative:
+    - "ainda não tenho o material reunido (use writing-fragments)"
+    - "rascunho com destino de publicação (use article-draft)"
+    - "texto já estruturado em artigo final"
+    - "revisar estrutura de texto pronto (use content-design-review)"
+    - "mídia não-textual"
+updated: 2026-09-02
+consolidated-by: "R3 (absorveu writing-fragments, writing-beats como modos) · 2026-09-02 (writing-beats fundido no corpo como grão; writing-fragments promovido a skill)"
+reads: []
+writes: []
+reviewed-scope: "checagem mecanica + semantica: 0/0 wikilinks resolvem; 0/0 paths citados existem; 0 par modelo-effort invalido; drift semantico 0 (regras 1-6 R12); kind=skill-proc, 14 secoes, 172 linhas"
+reviewed-by: R12 (mimo-v2.6-pro lotes 1-5, claude-haiku lotes 6-12, varredura claude-opus-5-5)
+reviewed: 2026-10-04
 ---
 
 <what-to-do>

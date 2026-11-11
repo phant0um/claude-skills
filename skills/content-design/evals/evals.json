@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "content-design"
+    ],
+    "query": "Vou salvar esta nota no vault sobre o conceito de cache de embeddings. Antes de salvar, revisa a estrutura: a primeira frase precisa dizer o que é, cada frase uma ideia só, e cortar o que não ajuda.",
+    "files": [],
+    "expected_behavior": [
+      "Aplica as regras de estrutura: front-load, 1 ideia por frase, concreto, corte",
+      "Devolve o texto reestruturado com a definição na primeira linha"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "content-design"
+    ],
+    "query": "Vou escrever a página wiki sobre o processo de ingest. Me ajuda a estruturar antes de salvar.",
+    "files": [],
+    "expected_behavior": [
+      "Cuida de estrutura (ordem e corte), não de tom ou voz",
+      "Verifica que a conclusão ou definição aparece no início"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "content-design"
+    ],
+    "query": "Esse texto de rascunho de comentário que estou escrevendo no chat agora está com tom de IA? Tem palavras batidas?",
+    "files": [],
+    "expected_behavior": [
+      "Não aplica o procedimento de estrutura de página persistida",
+      "Indica que tom e palavras banidas são de voice-registers"
+    ],
+    "kind": "negativa"
+  }
+]

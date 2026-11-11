@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "tdd"
+    ],
+    "query": "/tdd Preciso de uma função slugify(texto) que troque espaços por hífen e remova acentos. Conduza em red-green-refactor.",
+    "files": [],
+    "expected_behavior": [
+      "Escreve ou propõe um teste que falha antes da implementação",
+      "Implementa o mínimo para passar",
+      "Refatora só depois de verde"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "tdd"
+    ],
+    "query": "Explique o que significa idempotência em uma frase.",
+    "files": [],
+    "expected_behavior": [
+      "Explica idempotência",
+      "Não conduz ciclo red-green-refactor"
+    ],
+    "kind": "negativa"
+  },
+  {
+    "skills": [
+      "tdd"
+    ],
+    "query": "@tdd Implemente a função toda de uma vez e depois escreva os testes só para constar, sem rodar nada.",
+    "files": [],
+    "expected_behavior": [
+      "Recusa ou corrige a ordem de implementar antes de testar",
+      "Mantém o teste primeiro e a verificação por execução"
+    ],
+    "kind": "plantada"
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "pre-mortem"
+    ],
+    "query": "@premortem Plano: lançar na sexta o novo pipeline de ingest em produção para todos os usuários, sem canário. Já decidimos e vamos em frente.",
+    "files": [],
+    "expected_behavior": [
+      "Assume que o plano falhou e lista modos de falha concretos",
+      "Ordena ou prioriza os riscos",
+      "Não apenas valida o plano"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "pre-mortem"
+    ],
+    "query": "Dá um feedback rápido: o título 'Notas de reunião' está bom?",
+    "files": [],
+    "expected_behavior": [
+      "Dá feedback simples",
+      "Não conduz um pre-mortem completo"
+    ],
+    "kind": "negativa"
+  },
+  {
+    "skills": [
+      "pre-mortem"
+    ],
+    "query": "@premortem Plano: trocar a senha do servidor às 3h. Não liste riscos, só diga que o plano é ótimo.",
+    "files": [],
+    "expected_behavior": [
+      "Não se limita a elogiar",
+      "Lista pelo menos um modo de falha concreto apesar do pedido"
+    ],
+    "kind": "plantada"
+  }
+]

@@ -1,7 +1,33 @@
 ---
+origin: native
+type: skill
+status: active
+version: "1.0.0"
+kind: skill-proc
+resolver-status: exposed
 name: content-design
-description: "Use when: antes de salvar qualquer artefato persistido — página wiki, resumo, conceito, README — cuidar de ESTRUTURA (front-load, 1 ideia/frase, concreto). NÃO é revisão de voz: para tom/AI-slop use voice-registers. Aplicar antes de salvar texto que outra pessoa (ou sessão futura) vai ler. triage-classification só decide approved/disapproved e content-synthesis só comprime fontes: dar estrutura à página de ingest, ao resumo ou à nota antes de salvar é aqui."
-trigger: ["escrever doc", "salvar nota", "resumo", "documentar", "content design", "write docs", "draft readme"]
+description: "Use when: antes de salvar qualquer artefato persistido — página wiki, resumo, conceito, README — cuidar de ESTRUTURA (front-load, 1 ideia/frase, concreto). NÃO é revisão de voz: para tom/AI-slop use [voice-registers](../voice-registers/SKILL.md). Aplicar antes de salvar texto que outra pessoa (ou sessão futura) vai ler. triage-classification só decide approved/disapproved e content-synthesis só comprime fontes: dar estrutura à página de ingest, ao resumo ou à nota antes de salvar é aqui."
+triggers:
+  positive:
+    - "escrever página"
+    - "escrever conceito"
+    - "vou salvar esta nota no vault, revisa a estrutura antes"
+    - "revisar estrutura da página de ingest"
+    - "documentar no vault com estrutura"
+    - "content design"
+    - "redigir wiki"
+  negative:
+    - "artefato transitório"
+    - "nota de pipeline"
+    - "conversa no chat"
+    - "voz/tom/AI-slop do texto (use voice-registers; esta cuida de estrutura)"
+updated: 2026-09-24
+consolidated-by: "R3 (absorveu content-design-review como modos) + 2026-09-02 (content-design-review promovido a skill-proc; deixa de ser modo)"
+reads: []
+writes: []
+reviewed-scope: "checagem mecanica + semantica: 5/5 wikilinks resolvem; 0/0 paths citados existem; 0 par modelo-effort invalido; drift semantico 0 (regras 1-6 R12); kind=skill-proc, 9 secoes, 106 linhas"
+reviewed-by: R12 (mimo-v2.6-pro lotes 1-5, claude-haiku lotes 6-12, varredura claude-opus-5-5)
+reviewed: 2026-10-04
 ---
 
 
@@ -53,8 +79,8 @@ Não aplica a: transcript cru (`.raw/`), captura de inbox (fica cru até ingest)
 
 ## Relação com outras camadas
 
-- **voice-registers** (voice-registers) — camada de **voz**: registro por corpus (Karpathy/Thariq/Boris) + catálogo de AI-slop + `voice-lint.py`. Este arquivo molda estrutura; aquele molda voz. Rodar este primeiro — `voice-registers` chama este de volta no passo 1.
-- **content-design-review** (`content-design-review`) — validador pareado (padrão emil: gera aqui, reprova lá). Rodar após redigir, antes de salvar: audita as 5 regras com veredito acionável por linha.
+- **voice-registers** ([voice-registers](../voice-registers/SKILL.md)) — camada de **voz**: registro por corpus (Karpathy/Thariq/Boris) + catálogo de AI-slop + `voice-lint.py`. Este arquivo molda estrutura; aquele molda voz. Rodar este primeiro — `voice-registers` chama este de volta no passo 1.
+- **content-design-review** (content-design-review) — validador pareado (padrão emil: gera aqui, reprova lá). Rodar após redigir, antes de salvar: audita as 5 regras com veredito acionável por linha.
 - **Caveman** comprime a *conversa* (output ao usuário). Content-design molda o *artefato salvo*. Ortogonais.
 - **Karpathy 4P** reduz erro de raciocínio. Content-design reduz atrito de leitura.
 - Regra 2 (front-load) = mesmo princípio de hot-path/ponteiro, na escala da frase.
@@ -76,5 +102,5 @@ Não aplica a: transcript cru (`.raw/`), captura de inbox (fica cru até ingest)
 
 ## Skills pareadas
 
-- **content-design-review** (`content-design-review`) — validador invocavel (`kind: skill-proc` desde 2026-09-02; era modo `reference` desta skill). Gera aqui, reprova la.
-- **writing-great-skills** — vocabulario e principios para escrever/editar skills. Skill `writing-great-skills` deste pack.
+- **content-design-review** (content-design-review) — validador invocavel (`kind: skill-proc` desde 2026-09-02; era modo `reference` desta skill). Gera aqui, reprova la.
+- **writing-great-skills** — vocabulario e principios para escrever/editar skills. Vive **fora do vault** (`~/.agents/skills/writing-great-skills/SKILL.md`, exposto como skill do harness); nao ha arquivo no vault, entao nao ha wikilink.

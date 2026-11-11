@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "marketing-content-design"
+    ],
+    "query": "Preciso de uma receita de edição no Lightroom para uma foto de produto de tênis branco, com fundo claro e aparência limpa. Me passa os passos.",
+    "files": [],
+    "expected_behavior": [
+      "Entrega receita de edição de foto em passos ordenados",
+      "Menciona o ajuste de luz/cor adequado a fundo claro e produto branco"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "marketing-content-design"
+    ],
+    "query": "Monte um plano de filmagem solo de 60 segundos para um vídeo de apresentação de uma loja de cerâmica, com lista de planos e ordem de gravação.",
+    "files": [],
+    "expected_behavior": [
+      "Entrega plano de filmagem com planos numerados",
+      "Cabe em uma pessoa filmando sozinha"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "marketing-content-design"
+    ],
+    "query": "Escreva a copy de um anúncio de 3 linhas para a nova linha de sabonetes artesanais.",
+    "files": [],
+    "expected_behavior": [
+      "Não produz a copy como peça principal",
+      "Encaminha texto e estratégia para content-creation"
+    ],
+    "kind": "negativa"
+  }
+]

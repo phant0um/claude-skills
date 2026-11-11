@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "reason-judge"
+    ],
+    "query": "Use uma rubrica para julgar este resumo de 4 pontos: relevância peso 0,4, profundidade 0,3, fonte confiável 0,2, não duplicado 0,1. Dê nota por ponto com uma frase de justificativa e o score final.",
+    "files": [],
+    "expected_behavior": [
+      "Pontua cada critério com uma frase de justificativa",
+      "Calcula o score como soma ponderada com pesos que somam 1"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "reason-judge"
+    ],
+    "query": "Um caso de governança está na borda: o output pode violar uma política de privacidade. Avalie com rubrica e diga se é preciso mais de uma passagem.",
+    "files": [],
+    "expected_behavior": [
+      "Indica que caso borderline exige pelo menos duas passagens com variância",
+      "Reporta média e variância, não nota única"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "reason-judge"
+    ],
+    "query": "Verifique se este número de telefone tem 11 dígitos. Sim ou não?",
+    "files": [],
+    "expected_behavior": [
+      "Responde com check binário direto",
+      "Não monta rubrica nem score"
+    ],
+    "kind": "negativa"
+  }
+]

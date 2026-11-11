@@ -1,0 +1,34 @@
+[
+  {
+    "skills": ["anti-over-engineering"],
+    "query": "Quero um script Python novo no vault que renomeia para minúsculas todos os arquivos de uma pasta. Vale a pena escrever um módulo com CLI, testes e arquivo de configuração, ou dá para resolver de outro jeito antes de escrever código? Preciso decidir antes de começar.",
+    "files": [],
+    "expected_behavior": [
+      "Aplica a escada YAGNI antes de propor código novo",
+      "Considera uma solução de uma linha ou nativa antes de um módulo com CLI e testes",
+      "Declara a decisão: código novo ou linha única, com justificativa curta"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["anti-over-engineering"],
+    "query": "Quero uma skill nova que gere um índice de tags em JSON com cache, validação de schema e modo de atualização incremental. Antes de implementar, quero saber se essa complexidade se justifica ou se dá para simplificar.",
+    "files": [],
+    "expected_behavior": [
+      "Questiona cada complexidade pedida (cache, schema, incremental) pelo critério YAGNI",
+      "Propõe a versão mínima que cobre o caso real",
+      "Não aprova a feature completa sem justificativa de uso"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["anti-over-engineering"],
+    "query": "No meu script que já está escrito, troca o nome da variável `x` por `contagem_itens`. Só isso, é um ajuste local.",
+    "files": [],
+    "expected_behavior": [
+      "Responde direto, sem rodar a escada YAGNI",
+      "Não gera plano de implementação nem propõe módulo novo"
+    ],
+    "kind": "negativa"
+  }
+]

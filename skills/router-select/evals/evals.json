@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "router-select"
+    ],
+    "query": "Vou rodar um batch de ingest de 40 fontes agora na sessão interativa. Antes de começar, qual modo de execução devo escolher?",
+    "files": [],
+    "expected_behavior": [
+      "Pergunta o modo de execução antes de agir",
+      "Não executa o ingest antes de devolver a seleção"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "router-select"
+    ],
+    "query": "Estou numa sessão interativa e já escolhi o modo Claude mais cedo. Agora preciso de um pipeline de deep work ambíguo com confiança 0,4. Qual effort usar?",
+    "files": [],
+    "expected_behavior": [
+      "Não repergunta o modo já escolhido na sessão",
+      "Pergunta o effort por ser deep e ambíguo"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "router-select"
+    ],
+    "query": "Um job de cron vai rodar a rotina de limpeza de madrugada. Pergunte ao usuário qual modo usar.",
+    "files": [],
+    "expected_behavior": [
+      "Não faz pergunta interativa em contexto de cron",
+      "Usa o default claude e registra a assumption"
+    ],
+    "kind": "negativa"
+  }
+]

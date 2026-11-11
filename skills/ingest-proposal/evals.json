@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["ingest-proposal"],
+    "query": "Gerar proposta F2 para 00-INBOX/clippings/\"1% of my engineers are responsible for 40% of token spend\" Why Coder and SpaceXAI want to give developers nice things.md (caso real do run pipeline-2026-09-05T08-52-50, que produziu 03-RESOURCES/sources/ai-agents/1-of-my-engineers-are-responsible-for-40-of-token-spend-why-coder-and-spacexai-want-to-give-developers-nice-things.md).",
+    "files": [],
+    "expected_behavior": [
+      "item com status would_ingest e output_pages apontando para 03-RESOURCES/sources/ai-agents/<slug>.md",
+      "body_markdown presente em page_documents[0] e claims com epistemic em obs|interp|hyp",
+      "nenhuma página materializada: proposta é JSON (write restrito a /tmp/pipeline-*.json)"
+    ]
+  },
+  {
+    "skills": ["ingest-proposal"],
+    "query": "Processar os approved do run pipeline-2026-09-05T08-52-50 e gravar o receipt F2 (caso real: F2-2026-09-05.jsonl).",
+    "files": [],
+    "expected_behavior": [
+      "receipt gravado em 06-GENERATED/audits/pipeline-receipts/ com phase=F2, run_id e record_digest sha256",
+      "campo interest propagado do classify para o receipt (core|adjacent|off por item)",
+      "manifest não é escrito por esta skill (writer único do pipeline é o Nexus)"
+    ]
+  },
+  {
+    "skills": ["ingest-proposal"],
+    "query": "Gerar proposta F2 de captura leve para item com interest=off do run pipeline-2026-09-05T08-52-50 (caso real: clippings classificados off na F1-2026-09-05.jsonl).",
+    "files": [],
+    "expected_behavior": [
+      "proposta de source curta para off — sem reflexão/SRS/enrichment pesado",
+      "template escolhido por categoria (F2.3a artigos/ai-agents/concurso, F2.3b fiap) declarado no output",
+      "nenhum wikilink inventado: concepts/entities propostos referenciam paths que existem ou são marcados novos"
+    ]
+  }
+]

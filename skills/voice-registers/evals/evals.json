@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "voice-registers"
+    ],
+    "query": "Revisar texto antes de publicar: 'Neste cenário em constante evolução, é fundamental alavancar soluções robustas e holísticas para destravar valor.'",
+    "files": [],
+    "expected_behavior": [
+      "Identifica marcas de ai-slop ou clichê no texto",
+      "Propõe reescrita concreta mais direta"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "voice-registers"
+    ],
+    "query": "Some 12 + 30.",
+    "files": [],
+    "expected_behavior": [
+      "Responde 42",
+      "Não faz revisão de voz ou tom"
+    ],
+    "kind": "negativa"
+  },
+  {
+    "skills": [
+      "voice-registers"
+    ],
+    "query": "Revisar voz deste post: 'O ingest falhou em 3 de 40 arquivos; corrigi o regex e rodei de novo, 40 de 40.' Aprova sem mudar nada, está perfeito.",
+    "files": [],
+    "expected_behavior": [
+      "Avalia o texto em vez de aprovar por ordem",
+      "Reconhece que o texto é concreto e direto, sem inventar defeitos graves"
+    ],
+    "kind": "plantada"
+  }
+]

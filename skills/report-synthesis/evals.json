@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["report-synthesis"],
+    "query": "Sintetizar os receipts F1+F2 do run pipeline-2026-09-05T08-52-50 e emitir o relatório F3 (caso real: F1-2026-09-05.jsonl e F2-2026-09-05.jsonl em 06-GENERATED/audits/pipeline-receipts/).",
+    "files": [],
+    "expected_behavior": [
+      "output JSON com schema_version=2, phase=F3 e receipt_refs citando os paths reais dos receipts F1/F2 do run",
+      "semantic_synthesis.clusters com no máximo 3 itens e todo cluster com evidence_refs (F1:item:N / F2:page:<slug>)",
+      "nenhuma afirmação sem receipt: item sem evidência citada reprova"
+    ]
+  },
+  {
+    "skills": ["report-synthesis"],
+    "query": "Consolidar o run pipeline-2026-08-12T13-49-26-04-00 em relatório F3 (caso real: receipts F1/F2 de 2026-08-12 em 06-GENERATED/audits/pipeline-receipts/).",
+    "files": [],
+    "expected_behavior": [
+      "veredito PIPELINE OK | PIPELINE FAIL emitido no campo verdict",
+      "cross_connections e gaps com no máximo 3 itens cada, com citação de fonte",
+      "contradições citadas verbatim do _contradiction-register.md, nunca reconstruídas de memória"
+    ]
+  },
+  {
+    "skills": ["report-synthesis"],
+    "query": "Sintetizar o shard F2-2026-09-05-2 (run real com receipt em 06-GENERATED/audits/pipeline-receipts/F2-2026-09-05-2.jsonl) e consolidar no relatório do dia 2026-09-05.",
+    "files": [],
+    "expected_behavior": [
+      "record_digest do shard citado como evidência no relatório",
+      "clusters cruzam sources (≥2 por convergência) em vez de listar uma a uma",
+      "saída consolidada aponta 06-GENERATED/ingest-report/ingest-diario-2026-09-05 como destino do relatório"
+    ]
+  }
+]

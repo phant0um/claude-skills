@@ -1,0 +1,34 @@
+[
+  {
+    "skills": ["cite-or-flag"],
+    "query": "No relatório escrevi que a alíquota do IRRF para a faixa de renda X é 27,5% desde 2024, e que a lei 14.000 art. 5º diz isso literalmente. Não tenho fonte colada aqui e não tenho acesso à internet agora. Como devo tratar essa afirmação antes de entregar?",
+    "files": [],
+    "expected_behavior": [
+      "Não mantém a afirmação como certa sem fonte visível",
+      "Marca o claim sem fonte como [não-verificado]",
+      "Não reproduz nem parafraseia o texto da lei como citação literal sem fonte"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["cite-or-flag"],
+    "query": "Vou publicar que o preço do Bitcoin fechou em US$ 95.000 ontem e que o múltiplo P/L da Petrobras é 4,2. Não tenho fonte colada. O que faço com esses números antes de publicar?",
+    "files": [],
+    "expected_behavior": [
+      "Identifica preço e múltiplo como claims de alta consequência",
+      "Marca cada número sem fonte como [não-verificado]",
+      "Não remove a marcação sem fonte nova"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": ["cite-or-flag"],
+    "query": "Qual é a capital da França? Responde em uma palavra.",
+    "files": [],
+    "expected_behavior": [
+      "Responde diretamente com a palavra Paris",
+      "Não marca [não-verificado] nem pede fonte"
+    ],
+    "kind": "negativa"
+  }
+]

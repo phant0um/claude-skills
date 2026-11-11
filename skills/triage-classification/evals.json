@@ -1,0 +1,32 @@
+[
+  {
+    "skills": ["triage-classification"],
+    "query": "Classificar o clipping 00-INBOX/clippings/\"Sorry for the messy rollout\" OpenAI launches GPT-6 Astra to most paying users a day after its unveiling.md (caso real do run pipeline-2026-09-05T08-52-50, processado como interest=core, domain=ai-agents).",
+    "files": [],
+    "expected_behavior": [
+      "veredito por item emitido como approved|disapproved, nunca outro valor",
+      "campo interest preenchido com core|adjacent|off (neste caso core) e domain ai-agents",
+      "record de receipt gravado com phase=F1, schema_version=2 e record_digest sha256 em 06-GENERATED/audits/pipeline-receipts/"
+    ]
+  },
+  {
+    "skills": ["triage-classification"],
+    "query": "Classificar o clipping 00-INBOX/clippings/10 Ways to Actually Make Money With Grok Bot.md (caso real do run pipeline-2026-09-05T08-52-50, processado como interest=off, domain=general).",
+    "files": [],
+    "expected_behavior": [
+      "interest classificado como off — captura leve, sem descartar o item",
+      "domain general atribuído por keyword matching do título",
+      "decisão registrada em receipt F1 append-only (linha nova, nada reescrito)"
+    ]
+  },
+  {
+    "skills": ["triage-classification"],
+    "query": "Classificar o lote de 00-INBOX/clippings/ do run pipeline-2026-09-05T08-52-50 (120 records reais em F1-2026-09-05.jsonl).",
+    "files": [],
+    "expected_behavior": [
+      "todo item recebe decision explícita approved|disapproved — item sem decisão reprova",
+      "content_hash sha256 calculado por item e presente no receipt",
+      "audit trail preservado: disapproved fica registrado em receipt, não é apagado"
+    ]
+  }
+]

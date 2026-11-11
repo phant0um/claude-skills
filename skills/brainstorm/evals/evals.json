@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "brainstorm"
+    ],
+    "query": "/brainstorm Como podemos reduzir o tempo de resposta do nosso suporte ao cliente sem contratar ninguém?",
+    "files": [],
+    "expected_behavior": [
+      "Gera várias opções divergentes antes de avaliar qualquer uma",
+      "Não entrega recomendação final"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "brainstorm"
+    ],
+    "query": "Que opções existem para organizar as notas de estudo do vault além de pastas por tema?",
+    "files": [],
+    "expected_behavior": [
+      "Entrega leque de opções com premissas por opção",
+      "Não avalia nem ranqueia antes do fim"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "brainstorm"
+    ],
+    "query": "Qual é a capital da Austrália? Só preciso da resposta.",
+    "files": [],
+    "expected_behavior": [
+      "Responde diretamente com Canberra",
+      "Não abre leque de opções"
+    ],
+    "kind": "negativa"
+  }
+]

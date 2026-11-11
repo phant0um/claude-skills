@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "office-hours"
+    ],
+    "query": "/office-hours Tenho a ideia de um app para dividir contas de viagem entre amigos. Vale a pena investir nisso?",
+    "files": [],
+    "expected_behavior": [
+      "Conduz perguntas forçadas sobre problema real, por que agora e menor teste",
+      "Fecha com decisão go, pivot ou drop"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "office-hours"
+    ],
+    "query": "Office hours: quero lançar um clube de leitura pago, mas não tenho certeza se alguém pagaria. Me interroga sobre a ideia.",
+    "files": [],
+    "expected_behavior": [
+      "Faz as forcing-questions sobre a ideia, não sobre um plano",
+      "Não aceita a premissa sem desafiar"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "office-hours"
+    ],
+    "query": "Qual a população do Brasil segundo o último censo?",
+    "files": [],
+    "expected_behavior": [
+      "Responde o fato diretamente",
+      "Não conduz interrogatório de decisão"
+    ],
+    "kind": "negativa"
+  }
+]

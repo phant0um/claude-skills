@@ -1,9 +1,29 @@
 ---
+origin: native
+status: active
+version: "1.0.0"
+kind: skill-proc
+resolver-status: exposed
 name: office-hours
-description: "Use when: /office-hours — interrogatório de DECISÃO: a ideia merece investimento? 6 forcing-questions estilo YC. Fase de avaliação pré-compromisso. Diferente de `pre-mortem` (que assume o compromisso e busca como vai falhar via prospective hindsight); office-hours é 'vale a pena fazer?', pre-mortem é 'como isso dá errado?'."
-trigger: "/office-hours" | "office hours" | "interroga essa ideia" | "stress-test this idea" | "should I build this"
+description: "Use when: /office-hours — interrogatório de DECISÃO: a ideia merece investimento? 6 forcing-questions estilo YC. Fase de avaliação pré-compromisso. Diferente de [pre-mortem](../pre-mortem/SKILL.md) (que assume o compromisso e busca como vai falhar via prospective hindsight); office-hours é 'vale a pena fazer?', pre-mortem é 'como isso dá errado?'."
+type: skill
+created: 2026-06-27
+updated: 2026-11-10
+reads: []
+writes: []
+triggers:
+  positive:
+    - "/office-hours"
+    - "interrogar produto ou ideia antes de investir"
+    - "6 forcing-questions de produto"
+  negative:
+    - "produto já validado no mercado"
+    - "decisão de implementação já tomada"
+reviewed: 2026-11-10
+reviewed-by: "claude-sonnet-5-5 (achados: shield claude-opus-5-5)"
+reviewed-scope: "2026-11-10 W7: corpo completo lido pelo shield (opus, somente leitura); W3: Completion alinhado as 6 perguntas e ao fecho go/pivot/drop; checks frontmatter/lint/evals verdes; 64 linhas, 4 secoes"
 ---
- office-hours — interroga a ideia antes de construir
+# office-hours — interroga a ideia antes de construir
 
 Aplica quando: nova ideia de produto/projeto/empreendimento, antes de planejar.
 Inspiração: gstack /office-hours (Garry Tan, YC).
@@ -28,13 +48,13 @@ Disambiguation: `office-hours` interroga a ideia antes de construir; `grill-me` 
 Saída: respostas curtas + 1 decisão (go / pivot / drop). Liga a empreendedorismo.
 Sem sycophancy — desafiar a premissa (cf council/debate/grill-me).
 
-> Distinção: office-hours interroga uma ideia com forcing-questions; `grill-me` faz entrevista adversarial de um plano.
+> [grill-me](../grill-me/SKILL.md) **não é modo de office-hours**: é skill própria, exposta e canônica desde 2026-09-02 (antes era stub `not-exposed` do shim externo). Editar comportamento de grilling se faz lá, no vault. Distinção: office-hours interroga uma ideia com forcing-questions; grill-me faz entrevista adversarial de um plano.
 
 ## Completion
 
-- [ ] Pergunta do usuário atendida dentro do horário declarado (ou escalada).
-- [ ] Resposta curta e diretiva; sem bullshit introdutório.
-- [ ] Se não souber, disse exatamente o que falta.
+- [ ] As 6 forcing-questions respondidas de forma curta; sem dado, a resposta diz "sem dado" e o que falta.
+- [ ] Ao menos uma premissa foi desafiada (sem sycophancy).
+- [ ] Saída fecha com 1 decisão: go / pivot / drop.
 
 ## Failure modes
 

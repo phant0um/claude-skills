@@ -1,0 +1,38 @@
+[
+  {
+    "skills": [
+      "writing-for-agents"
+    ],
+    "query": "Reescreva este trecho de SKILL.md para um agente: 'Faça uma boa revisão do código e veja se está tudo certo antes de seguir, com atenção aos detalhes importantes.' O critério de conclusão está vago.",
+    "files": [],
+    "expected_behavior": [
+      "Troca o critério vago por limite checável",
+      "Entrega a versão reescrita do trecho"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "writing-for-agents"
+    ],
+    "query": "Minha skill de resumo não dispara quando peço 'resume isso'. O pointer da description está fraco. Como corrijo a redação?",
+    "files": [],
+    "expected_behavior": [
+      "Aponta a leading word ou o trigger como causa de não disparo",
+      "Propõe ajuste de redação do pointer da description"
+    ],
+    "kind": "positiva"
+  },
+  {
+    "skills": [
+      "writing-for-agents"
+    ],
+    "query": "Escreva um post de blog de 300 palavras sobre viagens de inverno para leitores humanos.",
+    "files": [],
+    "expected_behavior": [
+      "Não aplica a skill a texto só para humano",
+      "Indica content-design ou voice-registers para texto humano"
+    ],
+    "kind": "negativa"
+  }
+]
